@@ -348,7 +348,6 @@ main{
 
 </header>
 
-
 <main>
 
   <button
@@ -357,7 +356,6 @@ main{
     onclick="goBack()">
     ← Voltar
   </button>
-
 
   <!-- INÍCIO -->
 
@@ -377,9 +375,7 @@ main{
 
     </div>
 
-
     <div id="results"></div>
-
 
     <div class="rooms">
 
@@ -397,7 +393,6 @@ main{
 
   </section>
 
-
   <!-- VÍDEO -->
 
   <section id="playerPage">
@@ -408,7 +403,6 @@ main{
 
     </div>
 
-
     <div class="videoInfo">
 
       <div
@@ -416,7 +410,6 @@ main{
         class="videoTitle">
         Vídeo
       </div>
-
 
       <div class="roomActions">
 
@@ -433,7 +426,6 @@ main{
       </div>
 
     </div>
-
 
     <!-- SALA -->
 
@@ -461,7 +453,6 @@ main{
 
       </div>
 
-
       <!-- CHAT -->
 
       <div class="chat">
@@ -470,12 +461,10 @@ main{
           Chat
         </div>
 
-
         <div
           id="chatMessages"
           class="chatMessages">
         </div>
-
 
         <div class="chatInput">
 
@@ -499,9 +488,7 @@ main{
 
 </main>
 
-
 <script src="https://www.youtube.com/iframe_api"></script>
-
 
 <script>
 
@@ -570,7 +557,6 @@ function createYouTubePlayer(){
 
         },
 
-
         onStateChange:function(event){
 
           if(applyingRemote){
@@ -580,7 +566,6 @@ function createYouTubePlayer(){
           if(!currentRoom){
             return;
           }
-
 
           if(
             event.data ===
@@ -597,7 +582,6 @@ function createYouTubePlayer(){
             });
 
           }
-
 
           if(
             event.data ===
@@ -638,21 +622,17 @@ async function searchYouTube(){
   const q =
     input.value.trim();
 
-
   if(!q){
     return;
   }
-
 
   const results =
     document.getElementById(
       "results"
     );
 
-
   results.innerHTML =
     '<div class="loading">Pesquisando...</div>';
-
 
   try{
 
@@ -662,10 +642,8 @@ async function searchYouTube(){
         encodeURIComponent(q)
       );
 
-
     const data =
       await response.json();
-
 
     if(!response.ok){
 
@@ -680,10 +658,8 @@ async function searchYouTube(){
       return;
     }
 
-
     const videos =
       data.items || [];
-
 
     if(!videos.length){
 
@@ -694,7 +670,6 @@ async function searchYouTube(){
 
       return;
     }
-
 
     results.innerHTML =
       videos.map(function(video){
@@ -715,7 +690,6 @@ async function searchYouTube(){
           "https://i.ytimg.com/vi/" +
           id +
           "/hqdefault.jpg";
-
 
         return `
 
@@ -749,7 +723,6 @@ async function searchYouTube(){
 
       }).join("");
 
-
   }catch(error){
 
     console.error(error);
@@ -771,47 +744,36 @@ async function searchYouTube(){
 function openVideo(videoId,title){
 
   selectedVideo = {
-
     id:videoId,
-
     title:title
-
   };
 
-
   currentRoom = null;
-
 
   document.getElementById(
     "homePage"
   ).style.display = "none";
 
-
   document.getElementById(
     "playerPage"
   ).style.display = "block";
-
 
   document.getElementById(
     "backButton"
   ).style.display = "block";
 
-
   document.getElementById(
     "roomPanel"
   ).style.display = "none";
-
 
   document.getElementById(
     "videoTitle"
   ).textContent = title;
 
-
   document.getElementById(
     "roomStatus"
   ).textContent =
     "Vídeo selecionado.";
-
 
   history.pushState(
     {page:"video"},
@@ -819,9 +781,7 @@ function openVideo(videoId,title){
     "#video"
   );
 
-
   historyState = "video";
-
 
   if(
     window.YT &&
@@ -849,7 +809,6 @@ async function createRoom(){
 
     return;
   }
-
 
   try{
 
@@ -880,10 +839,8 @@ async function createRoom(){
         }
       );
 
-
     const room =
       await response.json();
-
 
     if(!response.ok){
 
@@ -894,14 +851,11 @@ async function createRoom(){
 
     }
 
-
     currentRoom = room;
-
 
     document.getElementById(
       "roomPanel"
     ).style.display = "block";
-
 
     document.getElementById(
       "roomName"
@@ -909,12 +863,10 @@ async function createRoom(){
       room.title ||
       "Sala";
 
-
     document.getElementById(
       "roomStatus"
     ).textContent =
       "Sala pública ativa.";
-
 
     history.pushState(
       {page:"room"},
@@ -922,15 +874,11 @@ async function createRoom(){
       "#room"
     );
 
-
     historyState = "room";
-
 
     connectRoom(room.id);
 
-
     loadRooms();
-
 
   }catch(error){
 
@@ -959,21 +907,16 @@ async function joinRoom(roomId){
         encodeURIComponent(roomId) +
         "/join",
         {
-
           method:"POST",
-
           headers:{
             "Content-Type":
               "application/json"
           }
-
         }
       );
 
-
     const room =
       await response.json();
-
 
     if(!response.ok){
 
@@ -984,9 +927,7 @@ async function joinRoom(roomId){
 
     }
 
-
     currentRoom = room;
-
 
     selectedVideo = {
 
@@ -1000,44 +941,36 @@ async function joinRoom(roomId){
 
     };
 
-
     document.getElementById(
       "homePage"
     ).style.display = "none";
-
 
     document.getElementById(
       "playerPage"
     ).style.display = "block";
 
-
     document.getElementById(
       "backButton"
     ).style.display = "block";
 
-
     document.getElementById(
       "roomPanel"
     ).style.display = "block";
-
 
     document.getElementById(
       "videoTitle"
     ).textContent =
       selectedVideo.title;
 
-
     document.getElementById(
       "roomName"
     ).textContent =
       selectedVideo.title;
 
-
     document.getElementById(
       "roomStatus"
     ).textContent =
       "Você entrou na sala.";
-
 
     history.pushState(
       {page:"room"},
@@ -1045,12 +978,9 @@ async function joinRoom(roomId){
       "#room"
     );
 
-
     historyState = "room";
 
-
     connectRoom(roomId);
-
 
     if(
       window.YT &&
@@ -1060,7 +990,6 @@ async function joinRoom(roomId){
       createYouTubePlayer();
 
     }
-
 
   }catch(error){
 
@@ -1085,12 +1014,10 @@ function connectRoom(roomId){
 
   }
 
-
   const protocol =
     location.protocol === "https:"
       ? "wss:"
       : "ws:";
-
 
   socket =
     new WebSocket(
@@ -1099,7 +1026,6 @@ function connectRoom(roomId){
       location.host +
       "/ws"
     );
-
 
   socket.onopen =
     function(){
@@ -1114,14 +1040,12 @@ function connectRoom(roomId){
         })
       );
 
-
       document.getElementById(
         "roomStatus"
       ).textContent =
         "Conectado à sala.";
 
     };
-
 
   socket.onmessage =
     function(event){
@@ -1130,7 +1054,6 @@ function connectRoom(roomId){
 
         const message =
           JSON.parse(event.data);
-
 
         if(
           message.type ===
@@ -1150,7 +1073,6 @@ function connectRoom(roomId){
       }
 
     };
-
 
   socket.onerror =
     function(){
@@ -1174,7 +1096,6 @@ function sendRoomEvent(event){
   if(!currentRoom){
     return;
   }
-
 
   if(
     socket &&
@@ -1206,7 +1127,6 @@ function handleRoomEvent(event){
     return;
   }
 
-
   /* CHAT */
 
   if(event.kind === "chat"){
@@ -1224,16 +1144,13 @@ function handleRoomEvent(event){
     return;
   }
 
-
   /* VÍDEO */
 
   if(!player){
     return;
   }
 
-
   applyingRemote = true;
-
 
   try{
 
@@ -1249,7 +1166,6 @@ function handleRoomEvent(event){
 
     }
 
-
     if(
       event.kind ===
       "play"
@@ -1258,7 +1174,6 @@ function handleRoomEvent(event){
       player.playVideo();
 
     }
-
 
     if(
       event.kind ===
@@ -1274,7 +1189,6 @@ function handleRoomEvent(event){
     console.log(error);
 
   }
-
 
   setTimeout(
     function(){
@@ -1299,21 +1213,17 @@ function sendChat(){
       "chatInput"
     );
 
-
   const text =
     input.value.trim();
-
 
   if(!text){
     return;
   }
 
-
   addChatMessage(
     "Você",
     text
   );
-
 
   sendRoomEvent({
 
@@ -1324,7 +1234,6 @@ function sendChat(){
     text:text
 
   });
-
 
   input.value = "";
 
@@ -1341,16 +1250,13 @@ function addChatMessage(
       "chatMessages"
     );
 
-
   const message =
     document.createElement(
       "div"
     );
 
-
   message.className =
     "message";
-
 
   message.innerHTML =
     "<strong>" +
@@ -1360,9 +1266,7 @@ function addChatMessage(
     escapeHtml(text) +
     "</span>";
 
-
   box.appendChild(message);
-
 
   box.scrollTop =
     box.scrollHeight;
@@ -1381,7 +1285,6 @@ async function loadRooms(){
       "roomList"
     );
 
-
   try{
 
     const response =
@@ -1389,16 +1292,13 @@ async function loadRooms(){
         "/api/rooms"
       );
 
-
     const data =
       await response.json();
-
 
     const rooms =
       Array.isArray(data)
         ? data
         : data.rooms || [];
-
 
     if(!rooms.length){
 
@@ -1410,7 +1310,6 @@ async function loadRooms(){
       return;
 
     }
-
 
     list.innerHTML =
       rooms.map(
@@ -1427,7 +1326,6 @@ async function loadRooms(){
           const clients =
             room.clients ||
             0;
-
 
           return `
 
@@ -1446,7 +1344,6 @@ async function loadRooms(){
 
               </div>
 
-
               <button
                 onclick="joinRoom(
                   '${escapeAttr(id)}'
@@ -1462,7 +1359,6 @@ async function loadRooms(){
 
         }
       ).join("");
-
 
   }catch(error){
 
@@ -1494,20 +1390,16 @@ function leaveRoom(){
 
   }
 
-
   currentRoom = null;
-
 
   document.getElementById(
     "roomPanel"
   ).style.display = "none";
 
-
   document.getElementById(
     "roomStatus"
   ).textContent =
     "Vídeo selecionado.";
-
 
   historyState = "video";
 
@@ -1530,27 +1422,21 @@ function goHome(){
 
   }
 
-
   currentRoom = null;
-
 
   document.getElementById(
     "playerPage"
   ).style.display = "none";
 
-
   document.getElementById(
     "homePage"
   ).style.display = "block";
-
 
   document.getElementById(
     "backButton"
   ).style.display = "none";
 
-
   historyState = "home";
-
 
   if(location.hash){
 
@@ -1561,7 +1447,6 @@ function goHome(){
     );
 
   }
-
 
   loadRooms();
 
@@ -1581,10 +1466,8 @@ function goBack(){
 
     leaveRoom();
 
-
     historyState =
       "video";
-
 
     history.replaceState(
       {page:"video"},
@@ -1592,11 +1475,9 @@ function goBack(){
       "#video"
     );
 
-
     return;
 
   }
-
 
   if(
     historyState ===
@@ -1609,10 +1490,129 @@ function goBack(){
 
   }
 
-
   goHome();
 
 }
 
 
-/* ====
+/* =========================
+   BOTÃO FÍSICO / HISTÓRICO
+========================= */
+
+window.addEventListener(
+  "popstate",
+  function(){
+
+    if(
+      historyState ===
+      "room"
+    ){
+
+      leaveRoom();
+
+      historyState =
+        "video";
+
+      return;
+
+    }
+
+    if(
+      historyState ===
+      "video"
+    ){
+
+      goHome();
+
+      return;
+
+    }
+
+    goHome();
+
+  }
+);
+
+
+/* =========================
+   SEGURANÇA DO TEXTO
+========================= */
+
+function escapeHtml(value){
+
+  return String(value)
+
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
+
+}
+
+
+function escapeAttr(value){
+
+  return escapeHtml(value);
+
+}
+
+
+/* =========================
+   ENTER NA PESQUISA
+========================= */
+
+document
+  .getElementById("searchInput")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      if(
+        event.key ===
+        "Enter"
+      ){
+
+        searchYouTube();
+
+      }
+
+    }
+  );
+
+
+/* =========================
+   INICIALIZAÇÃO
+========================= */
+
+history.replaceState(
+  {page:"home"},
+  "",
+  location.pathname
+);
+
+loadRooms();
+
+</script>
+
+</body>
+</html>
