@@ -285,10 +285,6 @@ main{
   font-size:14px;
 }
 
-.hidden{
-  display:none !important;
-}
-
 .loading{
   color:#777;
   padding:10px 0;
@@ -336,64 +332,91 @@ main{
 <body>
 
 <header>
+
   <div class="headerTop">
+
     <div>
       <div class="logo">Namaguederaz</div>
       <div class="subtitle">Assistir juntos.</div>
     </div>
 
-    <button onclick="goHome()">Início</button>
+    <button onclick="goHome()">
+      Início
+    </button>
+
   </div>
+
 </header>
+
 
 <main>
 
-  <button id="backButton"
-          class="backButton"
-          onclick="goBack()">
+  <button
+    id="backButton"
+    class="backButton"
+    onclick="goBack()">
     ← Voltar
   </button>
 
+
   <!-- INÍCIO -->
+
   <section id="homePage">
 
     <div class="searchBox">
+
       <input
         id="searchInput"
         value="Jaspion"
         placeholder="Pesquisar vídeo no YouTube..."
-        autocomplete="off"
-      >
+        autocomplete="off">
 
       <button onclick="searchYouTube()">
         Pesquisar
       </button>
+
     </div>
+
 
     <div id="results"></div>
 
+
     <div class="rooms">
-      <div class="sectionTitle">Salas públicas</div>
-      <div id="roomList">
-        <div class="loading">Carregando salas...</div>
+
+      <div class="sectionTitle">
+        Salas públicas
       </div>
+
+      <div id="roomList">
+        <div class="loading">
+          Carregando salas...
+        </div>
+      </div>
+
     </div>
 
   </section>
 
 
   <!-- VÍDEO -->
+
   <section id="playerPage">
 
     <div class="playerBox">
+
       <div id="player"></div>
+
     </div>
+
 
     <div class="videoInfo">
 
-      <div id="videoTitle" class="videoTitle">
+      <div
+        id="videoTitle"
+        class="videoTitle">
         Vídeo
       </div>
+
 
       <div class="roomActions">
 
@@ -413,22 +436,33 @@ main{
 
 
     <!-- SALA -->
-    <div id="roomPanel" class="roomPanel">
+
+    <div
+      id="roomPanel"
+      class="roomPanel">
 
       <div class="roomHeader">
 
         <div>
-          <div id="roomName" class="roomName">
+
+          <div
+            id="roomName"
+            class="roomName">
             Sala
           </div>
 
-          <div id="roomStatus" class="roomStatus">
+          <div
+            id="roomStatus"
+            class="roomStatus">
             Conectando...
           </div>
+
         </div>
 
       </div>
 
+
+      <!-- CHAT -->
 
       <div class="chat">
 
@@ -436,10 +470,12 @@ main{
           Chat
         </div>
 
+
         <div
           id="chatMessages"
           class="chatMessages">
         </div>
+
 
         <div class="chatInput">
 
@@ -447,8 +483,7 @@ main{
             id="chatInput"
             placeholder="Digite uma mensagem..."
             maxlength="300"
-            autocomplete="off"
-          >
+            autocomplete="off">
 
           <button onclick="sendChat()">
             Enviar
@@ -467,7 +502,12 @@ main{
 
 <script src="https://www.youtube.com/iframe_api"></script>
 
+
 <script>
+
+/* =========================
+   VARIÁVEIS
+========================= */
 
 const API = "";
 
@@ -496,78 +536,123 @@ function onYouTubeIframeAPIReady(){
 
 function createYouTubePlayer(){
 
-  if(!selectedVideo) return;
+  if(!selectedVideo){
+    return;
+  }
 
-  document.getElementById("player").innerHTML = "";
+  const playerArea =
+    document.getElementById("player");
 
-  player = new YT.Player("player",{
+  playerArea.innerHTML = "";
 
-    videoId:selectedVideo.id,
+  player =
+    new YT.Player("player",{
 
-    playerVars:{
-      autoplay:1,
-      controls:1,
-      rel:0,
-      modestbranding:1,
-      playsinline:1
-    },
+      videoId:selectedVideo.id,
 
-    events:{
-      onReady:function(){
-
-        try{
-          player.playVideo();
-        }catch(e){}
-
+      playerVars:{
+        autoplay:1,
+        controls:1,
+        rel:0,
+        modestbranding:1,
+        playsinline:1
       },
 
-      onStateChange:function(event){
+      events:{
 
-        if(applyingRemote) return;
+        onReady:function(){
 
-        if(!currentRoom) return;
+          try{
+            player.playVideo();
+          }catch(error){
+            console.log(error);
+          }
 
-        if(event.data === YT.PlayerState.PLAYING){
+        },
 
-          sendRoomEvent({
-            kind:"play",
-            time:player.getCurrentTime()
-          });
 
-        }
+        onStateChange:function(event){
 
-        if(event.data === YT.PlayerState.PAUSED){
+          if(applyingRemote){
+            return;
+          }
 
-          sendRoomEvent({
-            kind:"pause",
-            time:player.getCurrentTime()
-          });
+          if(!currentRoom){
+            return;
+          }
+
+
+          if(
+            event.data ===
+            YT.PlayerState.PLAYING
+          ){
+
+            sendRoomEvent({
+
+              kind:"play",
+
+              time:
+                player.getCurrentTime()
+
+            });
+
+          }
+
+
+          if(
+            event.data ===
+            YT.PlayerState.PAUSED
+          ){
+
+            sendRoomEvent({
+
+              kind:"pause",
+
+              time:
+                player.getCurrentTime()
+
+            });
+
+          }
 
         }
 
       }
-    }
 
-  });
+    });
 
 }
 
 
 /* =========================
-   BUSCA
+   PESQUISA
 ========================= */
 
 async function searchYouTube(){
 
-  const input = document.getElementById("searchInput");
-  const q = input.value.trim();
+  const input =
+    document.getElementById(
+      "searchInput"
+    );
 
-  if(!q) return;
+  const q =
+    input.value.trim();
 
-  const results = document.getElementById("results");
+
+  if(!q){
+    return;
+  }
+
+
+  const results =
+    document.getElementById(
+      "results"
+    );
+
 
   results.innerHTML =
     '<div class="loading">Pesquisando...</div>';
+
 
   try{
 
@@ -577,7 +662,10 @@ async function searchYouTube(){
         encodeURIComponent(q)
       );
 
-    const data = await response.json();
+
+    const data =
+      await response.json();
+
 
     if(!response.ok){
 
@@ -592,7 +680,10 @@ async function searchYouTube(){
       return;
     }
 
-    const videos = data.items || [];
+
+    const videos =
+      data.items || [];
+
 
     if(!videos.length){
 
@@ -604,13 +695,20 @@ async function searchYouTube(){
       return;
     }
 
-    results.innerHTML =
-      videos.map(video => {
 
-        const id = video.videoId;
-        const title = video.title || "Vídeo";
+    results.innerHTML =
+      videos.map(function(video){
+
+        const id =
+          video.videoId;
+
+        const title =
+          video.title ||
+          "Vídeo";
+
         const channel =
-          video.channelTitle || "";
+          video.channelTitle ||
+          "";
 
         const thumb =
           video.thumb ||
@@ -618,7 +716,9 @@ async function searchYouTube(){
           id +
           "/hqdefault.jpg";
 
+
         return `
+
           <div
             class="result"
             onclick="openVideo(
@@ -644,9 +744,11 @@ async function searchYouTube(){
             </div>
 
           </div>
+
         `;
 
       }).join("");
+
 
   }catch(error){
 
@@ -669,30 +771,47 @@ async function searchYouTube(){
 function openVideo(videoId,title){
 
   selectedVideo = {
+
     id:videoId,
+
     title:title
+
   };
+
 
   currentRoom = null;
 
-  document.getElementById("homePage")
-    .style.display = "none";
 
-  document.getElementById("playerPage")
-    .style.display = "block";
+  document.getElementById(
+    "homePage"
+  ).style.display = "none";
 
-  document.getElementById("backButton")
-    .style.display = "block";
 
-  document.getElementById("roomPanel")
-    .style.display = "none";
+  document.getElementById(
+    "playerPage"
+  ).style.display = "block";
 
-  document.getElementById("videoTitle")
-    .textContent = title;
 
-  document.getElementById("roomStatus")
-    .textContent =
+  document.getElementById(
+    "backButton"
+  ).style.display = "block";
+
+
+  document.getElementById(
+    "roomPanel"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "videoTitle"
+  ).textContent = title;
+
+
+  document.getElementById(
+    "roomStatus"
+  ).textContent =
     "Vídeo selecionado.";
+
 
   history.pushState(
     {page:"video"},
@@ -700,9 +819,14 @@ function openVideo(videoId,title){
     "#video"
   );
 
+
   historyState = "video";
 
-  if(window.YT && YT.Player){
+
+  if(
+    window.YT &&
+    YT.Player
+  ){
 
     createYouTubePlayer();
 
@@ -719,37 +843,47 @@ async function createRoom(){
 
   if(!selectedVideo){
 
-    alert("Primeiro escolha um vídeo.");
+    alert(
+      "Primeiro escolha um vídeo."
+    );
 
     return;
   }
 
+
   try{
 
     const response =
-      await fetch("/api/rooms",{
+      await fetch(
+        "/api/rooms",
+        {
 
-        method:"POST",
+          method:"POST",
 
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        body:JSON.stringify({
+          body:JSON.stringify({
 
-          title:selectedVideo.title,
+            title:
+              selectedVideo.title,
 
-          pickedId:selectedVideo.id,
+            pickedId:
+              selectedVideo.id,
 
-          public:true
+            public:true
 
-        })
+          })
 
-      });
+        }
+      );
+
 
     const room =
       await response.json();
+
 
     if(!response.ok){
 
@@ -760,18 +894,27 @@ async function createRoom(){
 
     }
 
+
     currentRoom = room;
 
-    document.getElementById("roomPanel")
-      .style.display = "block";
 
-    document.getElementById("roomName")
-      .textContent =
-      room.title || "Sala";
+    document.getElementById(
+      "roomPanel"
+    ).style.display = "block";
 
-    document.getElementById("roomStatus")
-      .textContent =
+
+    document.getElementById(
+      "roomName"
+    ).textContent =
+      room.title ||
+      "Sala";
+
+
+    document.getElementById(
+      "roomStatus"
+    ).textContent =
       "Sala pública ativa.";
+
 
     history.pushState(
       {page:"room"},
@@ -779,17 +922,23 @@ async function createRoom(){
       "#room"
     );
 
+
     historyState = "room";
+
 
     connectRoom(room.id);
 
+
     loadRooms();
+
 
   }catch(error){
 
-    document.getElementById("roomStatus")
-      .textContent =
-      "Erro: " + error.message;
+    document.getElementById(
+      "roomStatus"
+    ).textContent =
+      "Erro: " +
+      error.message;
 
   }
 
@@ -810,16 +959,21 @@ async function joinRoom(roomId){
         encodeURIComponent(roomId) +
         "/join",
         {
+
           method:"POST",
+
           headers:{
             "Content-Type":
               "application/json"
           }
+
         }
       );
 
+
     const room =
       await response.json();
+
 
     if(!response.ok){
 
@@ -830,7 +984,9 @@ async function joinRoom(roomId){
 
     }
 
+
     currentRoom = room;
+
 
     selectedVideo = {
 
@@ -844,29 +1000,44 @@ async function joinRoom(roomId){
 
     };
 
-    document.getElementById("homePage")
-      .style.display = "none";
 
-    document.getElementById("playerPage")
-      .style.display = "block";
+    document.getElementById(
+      "homePage"
+    ).style.display = "none";
 
-    document.getElementById("backButton")
-      .style.display = "block";
 
-    document.getElementById("roomPanel")
-      .style.display = "block";
+    document.getElementById(
+      "playerPage"
+    ).style.display = "block";
 
-    document.getElementById("videoTitle")
-      .textContent =
+
+    document.getElementById(
+      "backButton"
+    ).style.display = "block";
+
+
+    document.getElementById(
+      "roomPanel"
+    ).style.display = "block";
+
+
+    document.getElementById(
+      "videoTitle"
+    ).textContent =
       selectedVideo.title;
 
-    document.getElementById("roomName")
-      .textContent =
+
+    document.getElementById(
+      "roomName"
+    ).textContent =
       selectedVideo.title;
 
-    document.getElementById("roomStatus")
-      .textContent =
+
+    document.getElementById(
+      "roomStatus"
+    ).textContent =
       "Você entrou na sala.";
+
 
     history.pushState(
       {page:"room"},
@@ -874,15 +1045,22 @@ async function joinRoom(roomId){
       "#room"
     );
 
+
     historyState = "room";
+
 
     connectRoom(roomId);
 
-    if(window.YT && YT.Player){
+
+    if(
+      window.YT &&
+      YT.Player
+    ){
 
       createYouTubePlayer();
 
     }
+
 
   }catch(error){
 
@@ -903,14 +1081,16 @@ function connectRoom(roomId){
 
     try{
       socket.close();
-    }catch(e){}
+    }catch(error){}
 
   }
+
 
   const protocol =
     location.protocol === "https:"
       ? "wss:"
       : "ws:";
+
 
   socket =
     new WebSocket(
@@ -920,59 +1100,67 @@ function connectRoom(roomId){
       "/ws"
     );
 
-  socket.onopen = function(){
 
-    socket.send(
-      JSON.stringify({
+  socket.onopen =
+    function(){
 
-        type:"join-room",
+      socket.send(
+        JSON.stringify({
 
-        roomId:roomId
+          type:"join-room",
 
-      })
-    );
+          roomId:roomId
 
-    document.getElementById("roomStatus")
-      .textContent =
-      "Conectado à sala.";
-
-  };
+        })
+      );
 
 
-  socket.onmessage = function(event){
+      document.getElementById(
+        "roomStatus"
+      ).textContent =
+        "Conectado à sala.";
 
-    try{
+    };
 
-      const message =
-        JSON.parse(event.data);
 
-      if(
-        message.type ===
-        "room-event"
-      ){
+  socket.onmessage =
+    function(event){
 
-        handleRoomEvent(
-          message.event
-        );
+      try{
+
+        const message =
+          JSON.parse(event.data);
+
+
+        if(
+          message.type ===
+          "room-event"
+        ){
+
+          handleRoomEvent(
+            message.event
+          );
+
+        }
+
+      }catch(error){
+
+        console.error(error);
 
       }
 
-    }catch(error){
-
-      console.error(error);
-
-    }
-
-  };
+    };
 
 
-  socket.onerror = function(){
+  socket.onerror =
+    function(){
 
-    document.getElementById("roomStatus")
-      .textContent =
-      "Conexão da sala indisponível.";
+      document.getElementById(
+        "roomStatus"
+      ).textContent =
+        "Conexão da sala indisponível.";
 
-  };
+    };
 
 }
 
@@ -983,11 +1171,15 @@ function connectRoom(roomId){
 
 function sendRoomEvent(event){
 
-  if(!currentRoom) return;
+  if(!currentRoom){
+    return;
+  }
+
 
   if(
     socket &&
-    socket.readyState === WebSocket.OPEN
+    socket.readyState ===
+    WebSocket.OPEN
   ){
 
     socket.send(
@@ -995,7 +1187,8 @@ function sendRoomEvent(event){
 
         type:"room-event",
 
-        roomId:currentRoom.id,
+        roomId:
+          currentRoom.id,
 
         event:event
 
@@ -1007,65 +1200,47 @@ function sendRoomEvent(event){
 }
 
 
-/* Também envia pelo endpoint HTTP,
-   para manter compatibilidade. */
-
-async function sendRoomEventHTTP(event){
-
-  if(!currentRoom) return;
-
-  try{
-
-    await fetch(
-      "/api/rooms/" +
-      encodeURIComponent(
-        currentRoom.id
-      ) +
-      "/event",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":
-            "application/json"
-        },
-        body:JSON.stringify({
-          event:event
-        })
-      }
-    );
-
-  }catch(e){
-
-    console.log(e);
-
-  }
-
-}
-
-
 function handleRoomEvent(event){
 
-  if(!event) return;
+  if(!event){
+    return;
+  }
+
+
+  /* CHAT */
 
   if(event.kind === "chat"){
 
     addChatMessage(
-      event.name || "Participante",
-      event.text || ""
+
+      event.name ||
+      "Participante",
+
+      event.text ||
+      ""
+
     );
 
     return;
-
   }
 
 
-  if(!player) return;
+  /* VÍDEO */
+
+  if(!player){
+    return;
+  }
+
 
   applyingRemote = true;
 
+
   try{
 
-    if(event.time !== undefined){
+    if(
+      event.time !==
+      undefined
+    ){
 
       player.seekTo(
         Number(event.time),
@@ -1074,13 +1249,21 @@ function handleRoomEvent(event){
 
     }
 
-    if(event.kind === "play"){
+
+    if(
+      event.kind ===
+      "play"
+    ){
 
       player.playVideo();
 
     }
 
-    if(event.kind === "pause"){
+
+    if(
+      event.kind ===
+      "pause"
+    ){
 
       player.pauseVideo();
 
@@ -1092,9 +1275,12 @@ function handleRoomEvent(event){
 
   }
 
+
   setTimeout(
     function(){
+
       applyingRemote = false;
+
     },
     500
   );
@@ -1113,45 +1299,58 @@ function sendChat(){
       "chatInput"
     );
 
+
   const text =
     input.value.trim();
 
-  if(!text) return;
 
-  const name = "Você";
+  if(!text){
+    return;
+  }
+
 
   addChatMessage(
-    name,
+    "Você",
     text
   );
+
 
   sendRoomEvent({
 
     kind:"chat",
 
-    name:name,
+    name:"Você",
 
     text:text
 
   });
+
 
   input.value = "";
 
 }
 
 
-function addChatMessage(name,text){
+function addChatMessage(
+  name,
+  text
+){
 
   const box =
     document.getElementById(
       "chatMessages"
     );
 
+
   const message =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   message.className =
     "message";
+
 
   message.innerHTML =
     "<strong>" +
@@ -1161,7 +1360,9 @@ function addChatMessage(name,text){
     escapeHtml(text) +
     "</span>";
 
+
   box.appendChild(message);
+
 
   box.scrollTop =
     box.scrollHeight;
@@ -1180,18 +1381,24 @@ async function loadRooms(){
       "roomList"
     );
 
+
   try{
 
     const response =
-      await fetch("/api/rooms");
+      await fetch(
+        "/api/rooms"
+      );
+
 
     const data =
       await response.json();
+
 
     const rooms =
       Array.isArray(data)
         ? data
         : data.rooms || [];
+
 
     if(!rooms.length){
 
@@ -1204,46 +1411,58 @@ async function loadRooms(){
 
     }
 
+
     list.innerHTML =
-      rooms.map(room => {
+      rooms.map(
+        function(room){
 
-        const id =
-          room.id ||
-          room.roomId;
+          const id =
+            room.id ||
+            room.roomId;
 
-        const title =
-          room.title ||
-          "Sala";
+          const title =
+            room.title ||
+            "Sala";
 
-        const clients =
-          room.clients || 0;
+          const clients =
+            room.clients ||
+            0;
 
-        return `
-          <div class="roomItem">
 
-            <div>
+          return `
 
-              <div class="roomItemTitle">
-                ${escapeHtml(title)}
+            <div class="roomItem">
+
+              <div>
+
+                <div class="roomItemTitle">
+                  ${escapeHtml(title)}
+                </div>
+
+                <div class="roomItemInfo">
+                  ${clients}
+                  participante(s)
+                </div>
+
               </div>
 
-              <div class="roomItemInfo">
-                ${clients} participante(s)
-              </div>
+
+              <button
+                onclick="joinRoom(
+                  '${escapeAttr(id)}'
+                )">
+
+                Entrar
+
+              </button>
 
             </div>
 
-            <button
-              onclick="joinRoom(
-                '${escapeAttr(id)}'
-              )">
-              Entrar
-            </button>
+          `;
 
-          </div>
-        `;
+        }
+      ).join("");
 
-      }).join("");
 
   }catch(error){
 
@@ -1269,20 +1488,26 @@ function leaveRoom(){
 
     try{
       socket.close();
-    }catch(e){}
+    }catch(error){}
 
     socket = null;
 
   }
 
+
   currentRoom = null;
 
-  document.getElementById("roomPanel")
-    .style.display = "none";
 
-  document.getElementById("roomStatus")
-    .textContent =
+  document.getElementById(
+    "roomPanel"
+  ).style.display = "none";
+
+
+  document.getElementById(
+    "roomStatus"
+  ).textContent =
     "Vídeo selecionado.";
+
 
   historyState = "video";
 
@@ -1290,7 +1515,7 @@ function leaveRoom(){
 
 
 /* =========================
-   NAVEGAÇÃO
+   IR PARA INÍCIO
 ========================= */
 
 function goHome(){
@@ -1299,24 +1524,33 @@ function goHome(){
 
     try{
       socket.close();
-    }catch(e){}
+    }catch(error){}
 
     socket = null;
 
   }
 
+
   currentRoom = null;
 
-  document.getElementById("playerPage")
-    .style.display = "none";
 
-  document.getElementById("homePage")
-    .style.display = "block";
+  document.getElementById(
+    "playerPage"
+  ).style.display = "none";
 
-  document.getElementById("backButton")
-    .style.display = "none";
+
+  document.getElementById(
+    "homePage"
+  ).style.display = "block";
+
+
+  document.getElementById(
+    "backButton"
+  ).style.display = "none";
+
 
   historyState = "home";
+
 
   if(location.hash){
 
@@ -1328,18 +1562,29 @@ function goHome(){
 
   }
 
+
   loadRooms();
 
 }
 
 
+/* =========================
+   VOLTAR
+========================= */
+
 function goBack(){
 
-  if(historyState === "room"){
+  if(
+    historyState ===
+    "room"
+  ){
 
     leaveRoom();
 
-    historyState = "video";
+
+    historyState =
+      "video";
+
 
     history.replaceState(
       {page:"video"},
@@ -1347,132 +1592,27 @@ function goBack(){
       "#video"
     );
 
+
     return;
 
   }
 
-  if(historyState === "video"){
+
+  if(
+    historyState ===
+    "video"
+  ){
 
     goHome();
 
     return;
 
   }
+
 
   goHome();
 
 }
 
 
-/* Botão físico Voltar do Android/Web */
-
-window.addEventListener(
-  "popstate",
-  function(){
-
-    if(historyState === "room"){
-
-      leaveRoom();
-
-      historyState = "video";
-
-      return;
-
-    }
-
-    if(historyState === "video"){
-
-      goHome();
-
-      return;
-
-    }
-
-    goHome();
-
-  }
-);
-
-
-/* =========================
-   SEGURANÇA DO TEXTO
-========================= */
-
-function escapeHtml(value){
-
-  return String(value)
-
-    .replaceAll("&","&amp;")
-
-    .replaceAll("<","&lt;")
-
-    .replaceAll(">","&gt;")
-
-    .replaceAll('"',"&quot;")
-
-    .replaceAll("'","&#039;");
-
-}
-
-
-function escapeAttr(value){
-
-  return escapeHtml(value);
-
-}
-
-
-/* =========================
-   ENTER NA PESQUISA
-========================= */
-
-document
-  .getElementById("searchInput")
-  .addEventListener(
-    "keydown",
-    function(event){
-
-      if(event.key === "Enter"){
-
-        searchYouTube();
-
-      }
-
-    }
-  );
-
-
-/* ENTER NO CHAT */
-
-document
-  .getElementById("chatInput")
-  .addEventListener(
-    "keydown",
-    function(event){
-
-      if(event.key === "Enter"){
-
-        sendChat();
-
-      }
-
-    }
-  );
-
-
-/* =========================
-   INICIAR
-========================= */
-
-history.replaceState(
-  {page:"home"},
-  "",
-  location.pathname
-);
-
-loadRooms();
-
-</script>
-
-</body>
-</html>
+/* ====
