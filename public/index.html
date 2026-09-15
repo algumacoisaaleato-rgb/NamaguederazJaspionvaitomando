@@ -6,9 +6,7 @@
 <title>Namaguederaz</title>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 html,body{
   margin:0;
@@ -25,22 +23,18 @@ body{
 
 button{
   border:0;
-  border-radius:9px;
-  padding:11px 15px;
+  border-radius:12px;
+  padding:12px 16px;
   background:#fff;
   color:#000;
   font-weight:700;
-  cursor:pointer;
-}
-
-button:active{
-  transform:scale(.98);
+  font-size:14px;
 }
 
 input{
   width:100%;
   padding:13px;
-  border-radius:9px;
+  border-radius:11px;
   border:1px solid #333;
   outline:none;
   background:#111;
@@ -49,38 +43,150 @@ input{
 }
 
 header{
-  padding:18px 16px;
-  border-bottom:1px solid #222;
+  height:72px;
+  padding:14px 16px;
+  border-bottom:1px solid #1d1d1d;
   background:#000;
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
 }
 
 .headerTop{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
 }
 
 .logo{
-  font-size:23px;
+  font-size:22px;
   font-weight:800;
 }
 
 .subtitle{
-  color:#888;
-  margin:6px 0 0;
-  font-size:13px;
+  color:#777;
+  font-size:12px;
+  margin-top:3px;
 }
 
 main{
-  width:100%;
   max-width:950px;
   margin:auto;
   padding:16px;
+  padding-bottom:110px;
 }
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
+
+/* INÍCIO */
+
+.homeTitle{
+  font-size:24px;
+  font-weight:800;
+  margin:10px 0 6px;
+}
+
+.homeSubtitle{
+  color:#777;
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+.roomsTitle{
+  font-size:19px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.roomItem{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:#111;
+  border:1px solid #222;
+  border-radius:13px;
+  padding:14px;
+  margin-bottom:10px;
+}
+
+.roomItemTitle{
+  font-weight:700;
+  font-size:14px;
+}
+
+.roomItemInfo{
+  color:#777;
+  font-size:12px;
+  margin-top:5px;
+}
+
+.empty{
+  color:#777;
+  padding:15px 0;
+}
+
+/* BOTÃO + */
+
+.bottomPlus{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  background:#fff;
+  color:#000;
+  font-size:34px;
+  line-height:62px;
+  padding:0;
+  z-index:50;
+  box-shadow:0 4px 20px rgba(255,255,255,.15);
+}
+
+/* PLATAFORMAS */
+
+.pageTitle{
+  font-size:23px;
+  font-weight:800;
+  margin:8px 0 20px;
+}
+
+.platformGrid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.platform{
+  min-height:120px;
+  background:#111;
+  border:1px solid #292929;
+  border-radius:15px;
+  padding:18px;
+  text-align:left;
+}
+
+.platformName{
+  font-size:18px;
+  font-weight:800;
+  margin-bottom:7px;
+}
+
+.platformDesc{
+  color:#777;
+  font-size:12px;
+  line-height:1.4;
+}
+
+/* YOUTUBE */
 
 .searchBox{
   display:flex;
@@ -92,12 +198,7 @@ main{
   flex:1;
 }
 
-.sectionTitle{
-  font-size:19px;
-  margin:20px 0 10px;
-}
-
-#results{
+.results{
   display:flex;
   flex-direction:column;
   gap:10px;
@@ -106,23 +207,17 @@ main{
 .result{
   display:flex;
   gap:12px;
-  padding:10px;
   background:#111;
   border:1px solid #222;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.result:hover{
-  background:#181818;
+  border-radius:12px;
+  padding:10px;
 }
 
 .result img{
-  width:145px;
-  height:82px;
+  width:125px;
+  height:70px;
   object-fit:cover;
-  border-radius:7px;
-  flex-shrink:0;
+  border-radius:8px;
 }
 
 .resultInfo{
@@ -130,32 +225,35 @@ main{
 }
 
 .resultTitle{
-  margin:2px 0 7px;
-  font-size:15px;
-  line-height:1.3;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.35;
 }
 
 .resultChannel{
-  color:#888;
+  color:#777;
   font-size:12px;
+  margin-top:6px;
 }
 
-#playerPage{
-  display:none;
+/* VÍDEO */
+
+.videoPage{
+  padding:0;
 }
 
-.playerBox{
+.videoBox{
   width:100%;
   background:#050505;
-  border-radius:10px;
+  border-radius:13px;
   overflow:hidden;
   border:1px solid #222;
+  position:relative;
 }
 
 #player{
   width:100%;
   aspect-ratio:16/9;
-  background:#111;
 }
 
 #player iframe{
@@ -164,78 +262,100 @@ main{
   border:0;
 }
 
-.videoInfo{
-  padding:14px 2px;
+.videoOverlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:15px;
+  background:linear-gradient(transparent,rgba(0,0,0,.9));
+  display:none;
+}
+
+.videoBox.touched .videoOverlay{
+  display:block;
+}
+
+.createRoomButton{
+  width:100%;
+  font-size:15px;
 }
 
 .videoTitle{
   font-size:18px;
-  font-weight:700;
-  margin-bottom:8px;
+  font-weight:800;
+  margin:15px 0 8px;
 }
 
-.roomActions{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
+.videoPlatform{
+  color:#777;
+  font-size:13px;
 }
 
-.secondary{
+/* NAVEGADOR */
+
+.browserBox{
+  border:1px solid #222;
+  border-radius:13px;
+  overflow:hidden;
   background:#111;
-  color:#fff;
-  border:1px solid #333;
 }
+
+.browserBar{
+  display:flex;
+  gap:7px;
+  padding:9px;
+  background:#111;
+}
+
+.browserBar button{
+  padding:10px 13px;
+}
+
+.browserFrame{
+  width:100%;
+  height:65vh;
+  border:0;
+  background:#fff;
+}
+
+/* SALA */
 
 .roomPanel{
-  display:none;
-  margin-top:18px;
-  padding:14px;
+  margin-top:15px;
   background:#111;
   border:1px solid #222;
-  border-radius:10px;
+  border-radius:13px;
+  padding:14px;
 }
 
 .roomHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.roomName{
-  font-size:18px;
-  font-weight:700;
+  font-weight:800;
+  font-size:17px;
 }
 
 .roomStatus{
-  color:#888;
-  font-size:13px;
+  color:#777;
+  font-size:12px;
   margin-top:5px;
 }
 
 .chat{
-  margin-top:15px;
-  border-top:1px solid #222;
-  padding-top:14px;
+  margin-top:18px;
 }
 
 .chatMessages{
-  height:180px;
+  height:170px;
   overflow-y:auto;
   background:#080808;
   border:1px solid #222;
-  border-radius:8px;
+  border-radius:9px;
   padding:10px;
 }
 
 .message{
-  margin-bottom:9px;
-  font-size:14px;
-  line-height:1.35;
-}
-
-.message strong{
-  color:#fff;
+  margin-bottom:8px;
+  font-size:13px;
 }
 
 .message span{
@@ -244,86 +364,39 @@ main{
 
 .chatInput{
   display:flex;
-  gap:8px;
+  gap:7px;
   margin-top:8px;
 }
 
-.chatInput input{
-  flex:1;
-}
+/* VOLTAR VISUAL */
 
-.rooms{
-  margin-top:24px;
-}
-
-.roomItem{
-  background:#111;
-  border:1px solid #222;
-  border-radius:9px;
-  padding:12px;
-  margin-bottom:9px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.roomItemTitle{
-  font-weight:700;
-  font-size:14px;
-}
-
-.roomItemInfo{
-  color:#777;
-  font-size:12px;
-  margin-top:4px;
-}
-
-.empty{
-  color:#777;
-  padding:15px 0;
-  font-size:14px;
-}
-
-.loading{
-  color:#777;
-  padding:10px 0;
-}
-
-.backButton{
-  display:none;
-  margin-bottom:12px;
+.topBack{
   background:#111;
   color:#fff;
   border:1px solid #333;
+  margin-bottom:14px;
 }
+
+/* MOBILE */
 
 @media(max-width:600px){
 
   main{
-    padding:12px;
+    padding:13px;
+    padding-bottom:105px;
+  }
+
+  .platformGrid{
+    grid-template-columns:1fr 1fr;
   }
 
   .result img{
-    width:120px;
-    height:68px;
-  }
-
-  .resultTitle{
-    font-size:14px;
-  }
-
-  .searchBox{
-    gap:6px;
+    width:110px;
+    height:62px;
   }
 
   .searchBox button{
-    padding-left:12px;
-    padding-right:12px;
-  }
-
-  .roomItem{
-    align-items:flex-start;
+    padding:12px;
   }
 }
 </style>
@@ -332,41 +405,131 @@ main{
 <body>
 
 <header>
-
   <div class="headerTop">
-
     <div>
       <div class="logo">Namaguederaz</div>
       <div class="subtitle">Assistir juntos.</div>
     </div>
-
-    <button onclick="goHome()">
-      Início
-    </button>
-
   </div>
-
 </header>
 
 <main>
 
-  <button
-    id="backButton"
-    class="backButton"
-    onclick="goBack()">
-    ← Voltar
-  </button>
-
   <!-- INÍCIO -->
 
-  <section id="homePage">
+  <section id="homePage" class="page active">
+
+    <div class="homeTitle">
+      Salas
+    </div>
+
+    <div class="homeSubtitle">
+      Entre em uma sala pública ou crie uma nova.
+    </div>
+
+    <div class="roomsTitle">
+      Salas públicas
+    </div>
+
+    <div id="roomList">
+      <div class="empty">
+        Carregando salas...
+      </div>
+    </div>
+
+    <button
+      class="bottomPlus"
+      onclick="openPlatforms()">
+      +
+    </button>
+
+  </section>
+
+
+  <!-- ESCOLHER PLATAFORMA -->
+
+  <section id="platformPage" class="page">
+
+    <button
+      class="topBack"
+      onclick="goPrevious()">
+      ← Voltar
+    </button>
+
+    <div class="pageTitle">
+      Escolha onde assistir
+    </div>
+
+    <div class="platformGrid">
+
+      <button
+        class="platform"
+        onclick="openYouTube()">
+
+        <div class="platformName">
+          YouTube
+        </div>
+
+        <div class="platformDesc">
+          Pesquise e assista vídeos do YouTube.
+        </div>
+
+      </button>
+
+
+      <button
+        class="platform"
+        onclick="openChrome()">
+
+        <div class="platformName">
+          Chrome
+        </div>
+
+        <div class="platformDesc">
+          Navegue pela internet dentro da área do app.
+        </div>
+
+      </button>
+
+
+      <button
+        class="platform"
+        onclick="openNetflix()">
+
+        <div class="platformName">
+          Netflix
+        </div>
+
+        <div class="platformDesc">
+          Acesso pelo navegador interno, quando permitido pelo serviço.
+        </div>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- YOUTUBE -->
+
+  <section id="youtubePage" class="page">
+
+    <button
+      class="topBack"
+      onclick="openPlatforms()">
+      ← Voltar
+    </button>
+
+    <div class="pageTitle">
+      YouTube
+    </div>
 
     <div class="searchBox">
 
       <input
         id="searchInput"
-        value="Jaspion"
-        placeholder="Pesquisar vídeo no YouTube..."
+        placeholder="Pesquisar no YouTube..."
         autocomplete="off">
 
       <button onclick="searchYouTube()">
@@ -375,89 +538,156 @@ main{
 
     </div>
 
-    <div id="results"></div>
+    <div id="results" class="results"></div>
 
-    <div class="rooms">
+  </section>
 
-      <div class="sectionTitle">
-        Salas públicas
+
+  <!-- CHROME -->
+
+  <section id="chromePage" class="page">
+
+    <button
+      class="topBack"
+      onclick="openPlatforms()">
+      ← Voltar
+    </button>
+
+    <div class="pageTitle">
+      Chrome
+    </div>
+
+    <div class="browserBox">
+
+      <div class="browserBar">
+
+        <input
+          id="chromeUrl"
+          value="https://www.google.com"
+          placeholder="Digite um endereço">
+
+        <button onclick="navigateBrowser()">
+          Ir
+        </button>
+
       </div>
 
-      <div id="roomList">
-        <div class="loading">
-          Carregando salas...
-        </div>
-      </div>
+      <iframe
+        id="browserFrame"
+        class="browserFrame"
+        src="https://www.google.com">
+      </iframe>
 
     </div>
 
   </section>
 
+
+  <!-- NETFLIX -->
+
+  <section id="netflixPage" class="page">
+
+    <button
+      class="topBack"
+      onclick="openPlatforms()">
+      ← Voltar
+    </button>
+
+    <div class="pageTitle">
+      Netflix
+    </div>
+
+    <div class="browserBox">
+
+      <div class="browserBar">
+
+        <input
+          id="netflixUrl"
+          value="https://www.netflix.com"
+          readonly>
+
+        <button onclick="openNetflixSite()">
+          Abrir
+        </button>
+
+      </div>
+
+      <iframe
+        id="netflixFrame"
+        class="browserFrame"
+        src="https://www.netflix.com">
+      </iframe>
+
+    </div>
+
+    <div class="empty">
+      Alguns serviços podem impedir a reprodução dentro de uma página incorporada. Isso depende das regras do próprio serviço.
+    </div>
+
+  </section>
+
+
   <!-- VÍDEO -->
 
-  <section id="playerPage">
+  <section id="videoPage" class="page videoPage">
 
-    <div class="playerBox">
+    <button
+      class="topBack"
+      onclick="goPrevious()">
+      ← Voltar
+    </button>
+
+    <div
+      id="videoBox"
+      class="videoBox"
+      onclick="toggleVideoControls()">
 
       <div id="player"></div>
 
-    </div>
+      <div class="videoOverlay">
 
-    <div class="videoInfo">
-
-      <div
-        id="videoTitle"
-        class="videoTitle">
-        Vídeo
-      </div>
-
-      <div class="roomActions">
-
-        <button onclick="createRoom()">
+        <button
+          class="createRoomButton"
+          onclick="event.stopPropagation();createRoom()">
           + Criar sala
         </button>
 
-        <button
-          class="secondary"
-          onclick="leaveRoom()">
-          Sair da sala
-        </button>
-
       </div>
 
     </div>
 
-    <!-- SALA -->
+    <div
+      id="videoTitle"
+      class="videoTitle">
+      Vídeo
+    </div>
+
+    <div
+      id="videoPlatform"
+      class="videoPlatform">
+      YouTube
+    </div>
 
     <div
       id="roomPanel"
-      class="roomPanel">
+      class="roomPanel"
+      style="display:none">
 
-      <div class="roomHeader">
-
-        <div>
-
-          <div
-            id="roomName"
-            class="roomName">
-            Sala
-          </div>
-
-          <div
-            id="roomStatus"
-            class="roomStatus">
-            Conectando...
-          </div>
-
-        </div>
-
+      <div
+        id="roomName"
+        class="roomHeader">
+        Sala
       </div>
 
-      <!-- CHAT -->
+      <div
+        id="roomStatus"
+        class="roomStatus">
+        Conectando...
+      </div>
 
       <div class="chat">
 
-        <div class="sectionTitle">
+        <div class="roomsTitle">
           Chat
         </div>
 
@@ -470,8 +700,8 @@ main{
 
           <input
             id="chatInput"
-            placeholder="Digite uma mensagem..."
             maxlength="300"
+            placeholder="Digite uma mensagem..."
             autocomplete="off">
 
           <button onclick="sendChat()">
@@ -488,24 +718,115 @@ main{
 
 </main>
 
+
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
 
 /* =========================
-   VARIÁVEIS
+   ESTADO
 ========================= */
 
-const API = "";
-
 let selectedVideo = null;
+let selectedPlatform = null;
 let currentRoom = null;
 let socket = null;
 let player = null;
-
-let historyState = "home";
-
 let applyingRemote = false;
+
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(function(page){
+    page.classList.remove("active");
+  });
+
+  document.getElementById(id).classList.add("active");
+}
+
+
+function pushPage(page){
+  history.pushState({page:page},"","#"+page);
+}
+
+
+function openPlatforms(){
+  showPage("platformPage");
+  pushPage("platform");
+}
+
+
+function openYouTube(){
+  selectedPlatform = "youtube";
+  showPage("youtubePage");
+  pushPage("youtube");
+}
+
+
+function openChrome(){
+  selectedPlatform = "chrome";
+  showPage("chromePage");
+  pushPage("chrome");
+}
+
+
+function openNetflix(){
+  selectedPlatform = "netflix";
+  showPage("netflixPage");
+  pushPage("netflix");
+}
+
+
+function goPrevious(){
+  history.back();
+}
+
+
+window.addEventListener("popstate",function(event){
+
+  const page = event.state?.page || "home";
+
+  if(page === "home"){
+    showPage("homePage");
+    loadRooms();
+    return;
+  }
+
+  if(page === "platform"){
+    showPage("platformPage");
+    return;
+  }
+
+  if(page === "youtube"){
+    showPage("youtubePage");
+    return;
+  }
+
+  if(page === "chrome"){
+    showPage("chromePage");
+    return;
+  }
+
+  if(page === "netflix"){
+    showPage("netflixPage");
+    return;
+  }
+
+  if(page === "video"){
+    showPage("videoPage");
+    return;
+  }
+
+  if(page === "room"){
+    showPage("videoPage");
+    return;
+  }
+
+  showPage("homePage");
+});
 
 
 /* =========================
@@ -513,98 +834,76 @@ let applyingRemote = false;
 ========================= */
 
 function onYouTubeIframeAPIReady(){
-
   if(selectedVideo){
     createYouTubePlayer();
   }
-
 }
 
 
 function createYouTubePlayer(){
 
-  if(!selectedVideo){
+  if(!selectedVideo || selectedPlatform !== "youtube"){
     return;
   }
 
-  const playerArea =
-    document.getElementById("player");
+  if(player){
+    try{
+      player.destroy();
+    }catch(e){}
+    player = null;
+  }
 
-  playerArea.innerHTML = "";
+  document.getElementById("player").innerHTML = "";
 
-  player =
-    new YT.Player("player",{
+  player = new YT.Player("player",{
 
-      videoId:selectedVideo.id,
+    videoId:selectedVideo.id,
 
-      playerVars:{
-        autoplay:1,
-        controls:1,
-        rel:0,
-        modestbranding:1,
-        playsinline:1
+    playerVars:{
+      autoplay:1,
+      controls:1,
+      rel:0,
+      modestbranding:1,
+      playsinline:1
+    },
+
+    events:{
+
+      onReady:function(){
+        try{
+          player.playVideo();
+        }catch(e){}
       },
 
-      events:{
+      onStateChange:function(event){
 
-        onReady:function(){
+        if(applyingRemote || !currentRoom){
+          return;
+        }
 
-          try{
-            player.playVideo();
-          }catch(error){
-            console.log(error);
-          }
+        if(event.data === YT.PlayerState.PLAYING){
 
-        },
+          sendRoomEvent({
+            kind:"play",
+            time:player.getCurrentTime()
+          });
 
-        onStateChange:function(event){
+        }
 
-          if(applyingRemote){
-            return;
-          }
+        if(event.data === YT.PlayerState.PAUSED){
 
-          if(!currentRoom){
-            return;
-          }
-
-          if(
-            event.data ===
-            YT.PlayerState.PLAYING
-          ){
-
-            sendRoomEvent({
-
-              kind:"play",
-
-              time:
-                player.getCurrentTime()
-
-            });
-
-          }
-
-          if(
-            event.data ===
-            YT.PlayerState.PAUSED
-          ){
-
-            sendRoomEvent({
-
-              kind:"pause",
-
-              time:
-                player.getCurrentTime()
-
-            });
-
-          }
+          sendRoomEvent({
+            kind:"pause",
+            time:player.getCurrentTime()
+          });
 
         }
 
       }
 
-    });
+    }
 
+  });
 }
 
 
@@ -614,31 +913,26 @@ function createYouTubePlayer(){
 
 async function searchYouTube(){
 
-  const input =
-    document.getElementById(
-      "searchInput"
-    );
-
   const q =
-    input.value.trim();
+    document.getElementById("searchInput").value.trim();
+
+  const results =
+    document.getElementById("results");
 
   if(!q){
+    results.innerHTML =
+      '<div class="empty">Digite o que deseja pesquisar.</div>';
     return;
   }
 
-  const results =
-    document.getElementById(
-      "results"
-    );
-
   results.innerHTML =
-    '<div class="loading">Pesquisando...</div>';
+    '<div class="empty">Pesquisando...</div>';
 
   try{
 
     const response =
       await fetch(
-        "/api/youtube/search?q=" +
+        "/api/youtube/search?q="+
         encodeURIComponent(q)
       );
 
@@ -648,11 +942,11 @@ async function searchYouTube(){
     if(!response.ok){
 
       results.innerHTML =
-        '<div class="empty">' +
+        '<div class="empty">'+
         escapeHtml(
           data.error ||
           "Erro na pesquisa."
-        ) +
+        )+
         '</div>';
 
       return;
@@ -664,9 +958,7 @@ async function searchYouTube(){
     if(!videos.length){
 
       results.innerHTML =
-        '<div class="empty">' +
-        'Nenhum vídeo encontrado.' +
-        '</div>';
+        '<div class="empty">Nenhum vídeo encontrado.</div>';
 
       return;
     }
@@ -674,51 +966,31 @@ async function searchYouTube(){
     results.innerHTML =
       videos.map(function(video){
 
-        const id =
-          video.videoId;
-
-        const title =
-          video.title ||
-          "Vídeo";
-
-        const channel =
-          video.channelTitle ||
-          "";
-
-        const thumb =
-          video.thumb ||
-          "https://i.ytimg.com/vi/" +
-          id +
-          "/hqdefault.jpg";
-
         return `
-
           <div
             class="result"
             onclick="openVideo(
-              '${escapeAttr(id)}',
-              '${escapeAttr(title)}'
+              '${escapeAttr(video.videoId)}',
+              '${escapeAttr(video.title)}'
             )">
 
             <img
-              src="${escapeAttr(thumb)}"
-              loading="lazy"
+              src="${escapeAttr(video.thumb)}"
               alt="">
 
             <div class="resultInfo">
 
               <div class="resultTitle">
-                ${escapeHtml(title)}
+                ${escapeHtml(video.title)}
               </div>
 
               <div class="resultChannel">
-                ${escapeHtml(channel)}
+                ${escapeHtml(video.channelTitle || "")}
               </div>
 
             </div>
 
           </div>
-
         `;
 
       }).join("");
@@ -728,12 +1000,11 @@ async function searchYouTube(){
     console.error(error);
 
     results.innerHTML =
-      '<div class="empty">' +
-      'Não foi possível pesquisar agora.' +
+      '<div class="empty">'+
+      'Não foi possível pesquisar agora.'+
       '</div>';
 
   }
-
 }
 
 
@@ -743,54 +1014,50 @@ async function searchYouTube(){
 
 function openVideo(videoId,title){
 
+  selectedPlatform = "youtube";
+
   selectedVideo = {
     id:videoId,
     title:title
   };
 
+  if(socket){
+    try{
+      socket.close();
+    }catch(e){}
+    socket = null;
+  }
+
   currentRoom = null;
 
-  document.getElementById(
-    "homePage"
-  ).style.display = "none";
+  document.getElementById("roomPanel").style.display = "none";
 
-  document.getElementById(
-    "playerPage"
-  ).style.display = "block";
+  document.getElementById("videoTitle").textContent =
+    title || "Vídeo";
 
-  document.getElementById(
-    "backButton"
-  ).style.display = "block";
+  document.getElementById("videoPlatform").textContent =
+    "YouTube";
 
-  document.getElementById(
-    "roomPanel"
-  ).style.display = "none";
+  showPage("videoPage");
 
-  document.getElementById(
-    "videoTitle"
-  ).textContent = title;
+  pushPage("video");
 
-  document.getElementById(
-    "roomStatus"
-  ).textContent =
-    "Vídeo selecionado.";
-
-  history.pushState(
-    {page:"video"},
-    "",
-    "#video"
-  );
-
-  historyState = "video";
-
-  if(
-    window.YT &&
-    YT.Player
-  ){
-
+  if(window.YT && YT.Player){
     createYouTubePlayer();
-
   }
+}
+
+
+/* =========================
+   TOQUE NO VÍDEO
+========================= */
+
+function toggleVideoControls(){
+
+  const box =
+    document.getElementById("videoBox");
+
+  box.classList.toggle("touched");
 
 }
 
@@ -803,9 +1070,7 @@ async function createRoom(){
 
   if(!selectedVideo){
 
-    alert(
-      "Primeiro escolha um vídeo."
-    );
+    alert("Nenhum vídeo selecionado.");
 
     return;
   }
@@ -816,26 +1081,21 @@ async function createRoom(){
       await fetch(
         "/api/rooms",
         {
-
           method:"POST",
 
           headers:{
-            "Content-Type":
-              "application/json"
+            "Content-Type":"application/json"
           },
 
           body:JSON.stringify({
 
-            title:
-              selectedVideo.title,
+            title:selectedVideo.title,
 
-            pickedId:
-              selectedVideo.id,
+            pickedId:selectedVideo.id,
 
             public:true
 
           })
-
         }
       );
 
@@ -853,28 +1113,16 @@ async function createRoom(){
 
     currentRoom = room;
 
-    document.getElementById(
-      "roomPanel"
-    ).style.display = "block";
+    document.getElementById("roomPanel").style.display =
+      "block";
 
-    document.getElementById(
-      "roomName"
-    ).textContent =
-      room.title ||
-      "Sala";
+    document.getElementById("roomName").textContent =
+      room.title || "Sala";
 
-    document.getElementById(
-      "roomStatus"
-    ).textContent =
-      "Sala pública ativa.";
+    document.getElementById("roomStatus").textContent =
+      "Conectando à sala...";
 
-    history.pushState(
-      {page:"room"},
-      "",
-      "#room"
-    );
-
-    historyState = "room";
+    pushPage("room");
 
     connectRoom(room.id);
 
@@ -882,19 +1130,18 @@ async function createRoom(){
 
   }catch(error){
 
-    document.getElementById(
-      "roomStatus"
-    ).textContent =
-      "Erro: " +
-      error.message;
+    document.getElementById("roomStatus").textContent =
+      "Erro: "+error.message;
+
+    document.getElementById("roomPanel").style.display =
+      "block";
 
   }
-
 }
 
 
 /* =========================
-   ENTRAR NA SALA
+   ENTRAR EM SALA
 ========================= */
 
 async function joinRoom(roomId){
@@ -907,11 +1154,7 @@ async function joinRoom(roomId){
         encodeURIComponent(roomId) +
         "/join",
         {
-          method:"POST",
-          headers:{
-            "Content-Type":
-              "application/json"
-          }
+          method:"POST"
         }
       );
 
@@ -927,68 +1170,38 @@ async function joinRoom(roomId){
 
     }
 
-    currentRoom = room;
+    selectedPlatform = "youtube";
 
     selectedVideo = {
-
-      id:
-        room.pickedId ||
-        room.videoId,
-
-      title:
-        room.title ||
-        "Vídeo"
-
+      id:room.pickedId,
+      title:room.title || "Vídeo"
     };
 
-    document.getElementById(
-      "homePage"
-    ).style.display = "none";
+    currentRoom = room;
 
-    document.getElementById(
-      "playerPage"
-    ).style.display = "block";
-
-    document.getElementById(
-      "backButton"
-    ).style.display = "block";
-
-    document.getElementById(
-      "roomPanel"
-    ).style.display = "block";
-
-    document.getElementById(
-      "videoTitle"
-    ).textContent =
+    document.getElementById("videoTitle").textContent =
       selectedVideo.title;
 
-    document.getElementById(
-      "roomName"
-    ).textContent =
-      selectedVideo.title;
+    document.getElementById("videoPlatform").textContent =
+      "YouTube";
 
-    document.getElementById(
-      "roomStatus"
-    ).textContent =
-      "Você entrou na sala.";
+    document.getElementById("roomPanel").style.display =
+      "block";
 
-    history.pushState(
-      {page:"room"},
-      "",
-      "#room"
-    );
+    document.getElementById("roomName").textContent =
+      room.title || "Sala";
 
-    historyState = "room";
+    document.getElementById("roomStatus").textContent =
+      "Entrando na sala...";
 
-    connectRoom(roomId);
+    showPage("videoPage");
 
-    if(
-      window.YT &&
-      YT.Player
-    ){
+    pushPage("room");
 
+    connectRoom(room.id);
+
+    if(window.YT && YT.Player){
       createYouTubePlayer();
-
     }
 
   }catch(error){
@@ -996,7 +1209,6 @@ async function joinRoom(roomId){
     alert(error.message);
 
   }
-
 }
 
 
@@ -1010,7 +1222,7 @@ function connectRoom(roomId){
 
     try{
       socket.close();
-    }catch(error){}
+    }catch(e){}
 
   }
 
@@ -1021,102 +1233,74 @@ function connectRoom(roomId){
 
   socket =
     new WebSocket(
-      protocol +
-      "//" +
-      location.host +
+      protocol+
+      "//"+
+      location.host+
       "/ws"
     );
 
-  socket.onopen =
-    function(){
+  socket.onopen=function(){
 
-      socket.send(
-        JSON.stringify({
+    socket.send(
+      JSON.stringify({
+        type:"join-room",
+        roomId:roomId
+      })
+    );
 
-          type:"join-room",
+    document.getElementById("roomStatus").textContent =
+      "Conectado à sala.";
 
-          roomId:roomId
+  };
 
-        })
-      );
+  socket.onmessage=function(event){
 
-      document.getElementById(
-        "roomStatus"
-      ).textContent =
-        "Conectado à sala.";
+    try{
 
-    };
+      const message =
+        JSON.parse(event.data);
 
-  socket.onmessage =
-    function(event){
-
-      try{
-
-        const message =
-          JSON.parse(event.data);
-
-        if(
-          message.type ===
-          "room-event"
-        ){
-
-          handleRoomEvent(
-            message.event
-          );
-
-        }
-
-      }catch(error){
-
-        console.error(error);
-
+      if(message.type === "room-event"){
+        handleRoomEvent(message.event);
       }
 
-    };
+    }catch(e){
+      console.error(e);
+    }
 
-  socket.onerror =
-    function(){
+  };
 
-      document.getElementById(
-        "roomStatus"
-      ).textContent =
-        "Conexão da sala indisponível.";
+  socket.onerror=function(){
 
-    };
+    document.getElementById("roomStatus").textContent =
+      "Conexão da sala indisponível.";
+
+  };
 
 }
 
 
 /* =========================
-   EVENTOS DA SALA
+   SINCRONIZAÇÃO
 ========================= */
 
 function sendRoomEvent(event){
 
-  if(!currentRoom){
+  if(
+    !currentRoom ||
+    !socket ||
+    socket.readyState !== WebSocket.OPEN
+  ){
     return;
   }
 
-  if(
-    socket &&
-    socket.readyState ===
-    WebSocket.OPEN
-  ){
-
-    socket.send(
-      JSON.stringify({
-
-        type:"room-event",
-
-        roomId:
-          currentRoom.id,
-
-        event:event
-
-      })
-    );
-
-  }
+  socket.send(
+    JSON.stringify({
+      type:"room-event",
+      roomId:currentRoom.id,
+      event:event
+    })
+  );
 
 }
 
@@ -1127,24 +1311,15 @@ function handleRoomEvent(event){
     return;
   }
 
-  /* CHAT */
-
   if(event.kind === "chat"){
 
     addChatMessage(
-
-      event.name ||
-      "Participante",
-
-      event.text ||
-      ""
-
+      event.name || "Participante",
+      event.text || ""
     );
 
     return;
   }
-
-  /* VÍDEO */
 
   if(!player){
     return;
@@ -1154,10 +1329,7 @@ function handleRoomEvent(event){
 
   try{
 
-    if(
-      event.time !==
-      undefined
-    ){
+    if(event.time !== undefined){
 
       player.seekTo(
         Number(event.time),
@@ -1166,38 +1338,23 @@ function handleRoomEvent(event){
 
     }
 
-    if(
-      event.kind ===
-      "play"
-    ){
-
+    if(event.kind === "play"){
       player.playVideo();
-
     }
 
-    if(
-      event.kind ===
-      "pause"
-    ){
-
+    if(event.kind === "pause"){
       player.pauseVideo();
-
     }
 
-  }catch(error){
+  }catch(e){
 
-    console.log(error);
+    console.error(e);
 
   }
 
-  setTimeout(
-    function(){
-
-      applyingRemote = false;
-
-    },
-    500
-  );
+  setTimeout(function(){
+    applyingRemote = false;
+  },500);
 
 }
 
@@ -1209,9 +1366,7 @@ function handleRoomEvent(event){
 function sendChat(){
 
   const input =
-    document.getElementById(
-      "chatInput"
-    );
+    document.getElementById("chatInput");
 
   const text =
     input.value.trim();
@@ -1220,19 +1375,12 @@ function sendChat(){
     return;
   }
 
-  addChatMessage(
-    "Você",
-    text
-  );
+  addChatMessage("Você",text);
 
   sendRoomEvent({
-
     kind:"chat",
-
     name:"Você",
-
     text:text
-
   });
 
   input.value = "";
@@ -1240,30 +1388,23 @@ function sendChat(){
 }
 
 
-function addChatMessage(
-  name,
-  text
-){
+function addChatMessage(name,text){
 
   const box =
-    document.getElementById(
-      "chatMessages"
-    );
+    document.getElementById("chatMessages");
 
   const message =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
   message.className =
     "message";
 
   message.innerHTML =
-    "<strong>" +
-    escapeHtml(name) +
-    ":</strong> " +
-    "<span>" +
-    escapeHtml(text) +
+    "<strong>"+
+    escapeHtml(name)+
+    ":</strong> "+
+    "<span>"+
+    escapeHtml(text)+
     "</span>";
 
   box.appendChild(message);
@@ -1275,22 +1416,18 @@ function addChatMessage(
 
 
 /* =========================
-   SALAS PÚBLICAS
+   SALAS
 ========================= */
 
 async function loadRooms(){
 
   const list =
-    document.getElementById(
-      "roomList"
-    );
+    document.getElementById("roomList");
 
   try{
 
     const response =
-      await fetch(
-        "/api/rooms"
-      );
+      await fetch("/api/rooms");
 
     const data =
       await response.json();
@@ -1303,70 +1440,49 @@ async function loadRooms(){
     if(!rooms.length){
 
       list.innerHTML =
-        '<div class="empty">' +
-        'Nenhuma sala pública ativa.' +
+        '<div class="empty">'+
+        'Nenhuma sala pública ativa.'+
         '</div>';
 
       return;
-
     }
 
     list.innerHTML =
-      rooms.map(
-        function(room){
+      rooms.map(function(room){
 
-          const id =
-            room.id ||
-            room.roomId;
+        return `
+          <div class="roomItem">
 
-          const title =
-            room.title ||
-            "Sala";
+            <div>
 
-          const clients =
-            room.clients ||
-            0;
-
-          return `
-
-            <div class="roomItem">
-
-              <div>
-
-                <div class="roomItemTitle">
-                  ${escapeHtml(title)}
-                </div>
-
-                <div class="roomItemInfo">
-                  ${clients}
-                  participante(s)
-                </div>
-
+              <div class="roomItemTitle">
+                ${escapeHtml(room.title || "Sala")}
               </div>
 
-              <button
-                onclick="joinRoom(
-                  '${escapeAttr(id)}'
-                )">
-
-                Entrar
-
-              </button>
+              <div class="roomItemInfo">
+                ${(room.clients || 0)}
+                participante(s)
+              </div>
 
             </div>
 
-          `;
+            <button
+              onclick="joinRoom('${escapeAttr(room.id)}')">
+              Entrar
+            </button>
 
-        }
-      ).join("");
+          </div>
+        `;
+
+      }).join("");
 
   }catch(error){
 
     console.error(error);
 
     list.innerHTML =
-      '<div class="empty">' +
-      'Não foi possível carregar as salas.' +
+      '<div class="empty">'+
+      'Não foi possível carregar as salas.'+
       '</div>';
 
   }
@@ -1375,233 +1491,77 @@ async function loadRooms(){
 
 
 /* =========================
-   SAIR DA SALA
+   NAVEGADOR
 ========================= */
 
-function leaveRoom(){
+function navigateBrowser(){
 
-  if(socket){
+  let url =
+    document.getElementById("chromeUrl").value.trim();
 
-    try{
-      socket.close();
-    }catch(error){}
-
-    socket = null;
-
-  }
-
-  currentRoom = null;
-
-  document.getElementById(
-    "roomPanel"
-  ).style.display = "none";
-
-  document.getElementById(
-    "roomStatus"
-  ).textContent =
-    "Vídeo selecionado.";
-
-  historyState = "video";
-
-}
-
-
-/* =========================
-   IR PARA INÍCIO
-========================= */
-
-function goHome(){
-
-  if(socket){
-
-    try{
-      socket.close();
-    }catch(error){}
-
-    socket = null;
-
-  }
-
-  currentRoom = null;
-
-  document.getElementById(
-    "playerPage"
-  ).style.display = "none";
-
-  document.getElementById(
-    "homePage"
-  ).style.display = "block";
-
-  document.getElementById(
-    "backButton"
-  ).style.display = "none";
-
-  historyState = "home";
-
-  if(location.hash){
-
-    history.replaceState(
-      {page:"home"},
-      "",
-      location.pathname
-    );
-
-  }
-
-  loadRooms();
-
-}
-
-
-/* =========================
-   VOLTAR
-========================= */
-
-function goBack(){
-
-  if(
-    historyState ===
-    "room"
-  ){
-
-    leaveRoom();
-
-    historyState =
-      "video";
-
-    history.replaceState(
-      {page:"video"},
-      "",
-      "#video"
-    );
-
+  if(!url){
     return;
-
   }
 
-  if(
-    historyState ===
-    "video"
-  ){
-
-    goHome();
-
-    return;
-
+  if(!/^https?:\/\//i.test(url)){
+    url = "https://"+url;
   }
 
-  goHome();
+  document.getElementById("chromeUrl").value =
+    url;
+
+  document.getElementById("browserFrame").src =
+    url;
+
+}
+
+
+function openNetflixSite(){
+
+  document.getElementById("netflixFrame").src =
+    "https://www.netflix.com";
 
 }
 
 
 /* =========================
-   BOTÃO FÍSICO / HISTÓRICO
-========================= */
-
-window.addEventListener(
-  "popstate",
-  function(){
-
-    if(
-      historyState ===
-      "room"
-    ){
-
-      leaveRoom();
-
-      historyState =
-        "video";
-
-      return;
-
-    }
-
-    if(
-      historyState ===
-      "video"
-    ){
-
-      goHome();
-
-      return;
-
-    }
-
-    goHome();
-
-  }
-);
-
-
-/* =========================
-   SEGURANÇA DO TEXTO
+   SEGURANÇA
 ========================= */
 
 function escapeHtml(value){
 
   return String(value)
-
-    .replaceAll(
-      "&",
-      "&amp;"
-    )
-
-    .replaceAll(
-      "<",
-      "&lt;"
-    )
-
-    .replaceAll(
-      ">",
-      "&gt;"
-    )
-
-    .replaceAll(
-      '"',
-      "&quot;"
-    )
-
-    .replaceAll(
-      "'",
-      "&#039;"
-    );
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 
 }
 
 
 function escapeAttr(value){
-
   return escapeHtml(value);
-
 }
 
 
 /* =========================
-   ENTER NA PESQUISA
+   ENTER
 ========================= */
 
 document
   .getElementById("searchInput")
-  .addEventListener(
-    "keydown",
-    function(event){
+  .addEventListener("keydown",function(event){
 
-      if(
-        event.key ===
-        "Enter"
-      ){
-
-        searchYouTube();
-
-      }
-
+    if(event.key === "Enter"){
+      searchYouTube();
     }
-  );
+
+  });
 
 
 /* =========================
-   INICIALIZAÇÃO
+   HISTÓRICO INICIAL
 ========================= */
 
 history.replaceState(
