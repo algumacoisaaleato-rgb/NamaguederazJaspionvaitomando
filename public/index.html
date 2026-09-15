@@ -1,1 +1,419 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#000"><link rel="stylesheet" href="/styles.css"><title>Namaguederaz</title></head><body><header><button>⚙</button><b>Namaguederaz</b><button>◉</button></header><main><h1>Assistir juntos.</h1><p class="muted">Crie uma sala ou entre em uma sala pública ativa.</p><button class="primary" onclick="document.getElementById('q').focus()">＋ Criar sala</button><section><h2>YouTube</h2><div class="search"><input id="q" placeholder="Pesquisar vídeo..."><button onclick="searchYT()">Pesquisar</button></div><div id="results"></div><div id="playerBox" hidden><div id="player"></div><button class="primary" onclick="createRoom()">Criar sala</button></div><p id="status" class="muted"></p></section><section><h2>Público</h2><div id="rooms" class="muted">Nenhuma sala pública ativa.</div></section></main><script src="https://www.youtube.com/iframe_api"></script><script>let ws,pickedId='',pickedTitle='',player;const $=x=>document.getElementById(x);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));function connect(){ws=new WebSocket((location.protocol==='https:'?'wss:':'ws:')+'//'+location.host);ws.onopen=()=>ws.send(JSON.stringify({type:'list-public'}));ws.onmessage=e=>{const m=JSON.parse(e.data);if(m.type==='public-rooms')renderRooms(m.rooms);if(m.type==='room-created'||m.type==='room-joined')$('status').textContent='Sala: '+m.room.id;if(m.type==='error')$('status').textContent=m.message};ws.onclose=()=>setTimeout(connect,1500)}function renderRooms(a){$('rooms').innerHTML=a.length?a.map(r=>`<button class="room" onclick="join('${r.id}')"><b>${esc(r.title)}</b><span>${esc(r.provider)} · ${r.users} pessoa(s)</span></button>`).join(''):'Nenhuma sala pública ativa.'}function join(id){if(ws?.readyState===1)ws.send(JSON.stringify({type:'join-room',roomId:id}))}async function searchYT(){const q=$('q').value.trim();if(!q)return;$('results').innerHTML='<p class="muted">Pesquisando...</p>';try{const r=await fetch('/api/youtube-search?q='+encodeURIComponent(q)),d=await r.json();if(!r.ok)throw Error(d.error);$('results').innerHTML=d.length?d.map(v=>`<button class="video" onclick="openYT('${esc(v.id.videoId)}','${esc(v.snippet.title)}')"><img src="${esc(v.snippet.thumbnails?.medium?.url||'')}"><span><b>${esc(v.snippet.title)}</b><small>${esc(v.snippet.channelTitle||'')}</small></span></button>`).join(''):'<p class="muted">Nenhum vídeo encontrado.</p>'}catch(e){$('results').innerHTML='<p class="muted">Erro: '+esc(e.message)+'</p>'}}function openYT(id,title){pickedId=id;pickedTitle=title;$('playerBox').hidden=false;if(player)player.destroy();player=new YT.Player('player',{videoId:id,playerVars:{playsinline:1,rel:0},events:{onError:()=>{$('status').textContent='Este vídeo não permite reprodução incorporada.'}}})}function createRoom(){if(!pickedId||ws?.readyState!==1)return $('status').textContent='Conexão ainda não disponível.';ws.send(JSON.stringify({type:'create-room',title:pickedTitle+' — Sala',provider:'youtube',content:'https://www.youtube.com/watch?v='+pickedId,public:true}))}connect();</script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Namaguederaz</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#000;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+header{
+  padding:18px;
+  border-bottom:1px solid #222;
+}
+h1{margin:0 0 6px;font-size:24px}
+p{color:#aaa}
+main{padding:16px;max-width:900px;margin:auto}
+button{
+  background:#fff;
+  color:#000;
+  border:0;
+  border-radius:8px;
+  padding:11px 16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+input{
+  flex:1;
+  background:#111;
+  color:#fff;
+  border:1px solid #333;
+  border-radius:8px;
+  padding:12px;
+  outline:none;
+}
+.search{
+  display:flex;
+  gap:8px;
+  margin:18px 0;
+}
+.result{
+  display:flex;
+  gap:12px;
+  padding:10px;
+  margin-bottom:10px;
+  background:#111;
+  border-radius:10px;
+  cursor:pointer;
+}
+.result:hover{background:#181818}
+.result img{
+  width:150px;
+  height:85px;
+  object-fit:cover;
+  border-radius:7px;
+}
+.result h3{margin:2px 0 7px;font-size:15px}
+.result small{color:#999}
+#playerArea{
+  display:none;
+  margin-top:20px;
+}
+#player{
+  width:100%;
+  aspect-ratio:16/9;
+  background:#111;
+}
+#player iframe{
+  width:100%;
+  height:100%;
+  border:0;
+}
+.roomBox{
+  background:#111;
+  border:1px solid #222;
+  border-radius:10px;
+  padding:14px;
+  margin-top:15px;
+}
+.roomBox h2{margin-top:0}
+#rooms{margin-top:20px}
+.room{
+  background:#111;
+  border:1px solid #222;
+  padding:12px;
+  border-radius:9px;
+  margin-bottom:8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+.status{color:#777}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Namaguederaz</h1>
+  <p>Assistir juntos.</p>
+  <p>Crie uma sala ou entre em uma sala pública ativa.</p>
+  <button onclick="createRoom()">＋ Criar sala</button>
+</header>
+
+<main>
+
+  <div class="search">
+    <input id="q" value="Jaspion" placeholder="Pesquisar vídeo no YouTube...">
+    <button onclick="search()">Pesquisar</button>
+  </div>
+
+  <div id="results"></div>
+
+  <div id="playerArea">
+
+    <div id="player"></div>
+
+    <div class="roomBox">
+      <h2 id="videoTitle">Vídeo</h2>
+      <p id="roomStatus">Nenhuma sala criada.</p>
+
+      <button onclick="createRoom()">
+        ＋ Criar sala com este vídeo
+      </button>
+    </div>
+
+  </div>
+
+  <div id="rooms">
+    <h2>Salas públicas</h2>
+    <div id="roomList">Carregando...</div>
+  </div>
+
+</main>
+
+<script>
+const API = "";
+
+let selectedVideo = null;
+let currentRoom = null;
+let ws = null;
+
+function search(){
+  const q = document.getElementById("q").value.trim();
+
+  if(!q) return;
+
+  const results = document.getElementById("results");
+  results.innerHTML = "Pesquisando...";
+
+  fetch(API + "/api/youtube/search?q=" + encodeURIComponent(q))
+    .then(r => r.json())
+    .then(data => {
+
+      if(data.error){
+        results.innerHTML = "<p>Erro: " + escapeHtml(data.error) + "</p>";
+        return;
+      }
+
+      const videos = data.items || data;
+
+      if(!videos.length){
+        results.innerHTML = "<p>Nenhum vídeo encontrado.</p>";
+        return;
+      }
+
+      results.innerHTML = videos.map(video => {
+
+        const id = video.videoId;
+        const title = video.title || "";
+        const channel = video.channelTitle || "";
+        const thumb = video.thumb ||
+          "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+
+        return `
+          <div class="result" onclick="openVideo('${escapeAttr(id)}', '${escapeAttr(title)}')">
+            <img src="${escapeAttr(thumb)}" alt="">
+            <div>
+              <h3>${escapeHtml(title)}</h3>
+              <small>${escapeHtml(channel)}</small>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+    })
+    .catch(err => {
+      results.innerHTML = "<p>Erro ao pesquisar.</p>";
+      console.error(err);
+    });
+}
+
+function openVideo(videoId,title){
+
+  selectedVideo = {
+    id: videoId,
+    title: title
+  };
+
+  document.getElementById("playerArea").style.display = "block";
+  document.getElementById("videoTitle").textContent = title;
+
+  document.getElementById("player").innerHTML = `
+    <iframe
+      src="https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0"
+      title="${escapeAttr(title)}"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  `;
+
+  document.getElementById("roomStatus").textContent =
+    "Vídeo selecionado. Você pode criar uma sala.";
+}
+
+async function createRoom(){
+
+  if(!selectedVideo){
+    alert("Primeiro escolha um vídeo.");
+    return;
+  }
+
+  try{
+
+    const response = await fetch(API + "/api/rooms",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        title:selectedVideo.title,
+        pickedId:selectedVideo.id,
+        public:true
+      })
+    });
+
+    const room = await response.json();
+
+    if(!response.ok){
+      throw new Error(room.error || "Não foi possível criar a sala.");
+    }
+
+    currentRoom = room;
+
+    const roomId = room.id || room.roomId;
+
+    document.getElementById("roomStatus").textContent =
+      "Sala criada! ID: " + roomId;
+
+    connectRoom(roomId);
+
+    loadRooms();
+
+  }catch(error){
+
+    document.getElementById("roomStatus").textContent =
+      "Erro ao criar sala: " + error.message;
+
+  }
+}
+
+async function loadRooms(){
+
+  try{
+
+    const response = await fetch(API + "/api/rooms");
+    const data = await response.json();
+
+    const rooms = Array.isArray(data)
+      ? data
+      : (data.rooms || []);
+
+    const list = document.getElementById("roomList");
+
+    if(!rooms.length){
+      list.innerHTML = '<p class="status">Nenhuma sala pública ativa.</p>';
+      return;
+    }
+
+    list.innerHTML = rooms.map(room => {
+
+      const id = room.id || room.roomId;
+      const title = room.title || "Sala";
+
+      return `
+        <div class="room">
+          <div>
+            <strong>${escapeHtml(title)}</strong><br>
+            <small class="status">Sala pública</small>
+          </div>
+          <button onclick="joinRoom('${escapeAttr(id)}')">
+            Entrar
+          </button>
+        </div>
+      `;
+
+    }).join("");
+
+  }catch(error){
+
+    document.getElementById("roomList").innerHTML =
+      '<p class="status">Não foi possível carregar as salas.</p>';
+
+  }
+}
+
+async function joinRoom(roomId){
+
+  try{
+
+    const response = await fetch(
+      API + "/api/rooms/" + encodeURIComponent(roomId) + "/join",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        }
+      }
+    );
+
+    const room = await response.json();
+
+    if(!response.ok){
+      throw new Error(room.error || "Não foi possível entrar.");
+    }
+
+    currentRoom = room;
+
+    const videoId =
+      room.pickedId ||
+      room.videoId ||
+      room.video?.videoId;
+
+    const title =
+      room.title ||
+      room.videoTitle ||
+      "Vídeo";
+
+    if(videoId){
+      openVideo(videoId,title);
+    }
+
+    document.getElementById("roomStatus").textContent =
+      "Você entrou na sala.";
+
+    connectRoom(roomId);
+
+  }catch(error){
+
+    alert(error.message);
+
+  }
+}
+
+function connectRoom(roomId){
+
+  if(ws){
+    try{ ws.close(); }catch(e){}
+  }
+
+  const protocol =
+    location.protocol === "https:" ? "wss:" : "ws:";
+
+  ws = new WebSocket(
+    protocol + "//" + location.host + "/ws"
+  );
+
+  ws.onopen = () => {
+
+    ws.send(JSON.stringify({
+      type:"join-room",
+      roomId:roomId
+    }));
+
+  };
+
+  ws.onmessage = event => {
+
+    try{
+
+      const message = JSON.parse(event.data);
+
+      if(message.type === "room"){
+        console.log("Evento da sala:",message);
+      }
+
+    }catch(e){}
+
+  };
+
+  ws.onerror = () => {
+    console.log("WebSocket indisponível.");
+  };
+}
+
+function escapeHtml(value){
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function escapeAttr(value){
+  return escapeHtml(value);
+}
+
+loadRooms();
+</script>
+
+</body>
+</html>
