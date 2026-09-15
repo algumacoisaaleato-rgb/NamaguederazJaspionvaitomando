@@ -2,417 +2,1476 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Namaguederaz</title>
 
 <style>
-*{box-sizing:border-box}
-body{
+*{
+  box-sizing:border-box;
+}
+
+html,body{
   margin:0;
+  padding:0;
+  min-height:100%;
   background:#000;
   color:#fff;
-  font-family:Arial,sans-serif;
+  font-family:Arial,Helvetica,sans-serif;
 }
-header{
-  padding:18px;
-  border-bottom:1px solid #222;
+
+body{
+  overflow-x:hidden;
 }
-h1{margin:0 0 6px;font-size:24px}
-p{color:#aaa}
-main{padding:16px;max-width:900px;margin:auto}
+
 button{
+  border:0;
+  border-radius:9px;
+  padding:11px 15px;
   background:#fff;
   color:#000;
-  border:0;
-  border-radius:8px;
-  padding:11px 16px;
-  font-weight:bold;
+  font-weight:700;
   cursor:pointer;
 }
+
+button:active{
+  transform:scale(.98);
+}
+
 input{
-  flex:1;
+  width:100%;
+  padding:13px;
+  border-radius:9px;
+  border:1px solid #333;
+  outline:none;
   background:#111;
   color:#fff;
-  border:1px solid #333;
-  border-radius:8px;
-  padding:12px;
-  outline:none;
+  font-size:15px;
 }
-.search{
+
+header{
+  padding:18px 16px;
+  border-bottom:1px solid #222;
+  background:#000;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+
+.headerTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.logo{
+  font-size:23px;
+  font-weight:800;
+}
+
+.subtitle{
+  color:#888;
+  margin:6px 0 0;
+  font-size:13px;
+}
+
+main{
+  width:100%;
+  max-width:950px;
+  margin:auto;
+  padding:16px;
+}
+
+.searchBox{
   display:flex;
   gap:8px;
-  margin:18px 0;
+  margin-bottom:18px;
 }
+
+.searchBox input{
+  flex:1;
+}
+
+.sectionTitle{
+  font-size:19px;
+  margin:20px 0 10px;
+}
+
+#results{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
 .result{
   display:flex;
   gap:12px;
   padding:10px;
-  margin-bottom:10px;
   background:#111;
+  border:1px solid #222;
   border-radius:10px;
   cursor:pointer;
 }
-.result:hover{background:#181818}
+
+.result:hover{
+  background:#181818;
+}
+
 .result img{
-  width:150px;
-  height:85px;
+  width:145px;
+  height:82px;
   object-fit:cover;
   border-radius:7px;
+  flex-shrink:0;
 }
-.result h3{margin:2px 0 7px;font-size:15px}
-.result small{color:#999}
-#playerArea{
+
+.resultInfo{
+  min-width:0;
+}
+
+.resultTitle{
+  margin:2px 0 7px;
+  font-size:15px;
+  line-height:1.3;
+}
+
+.resultChannel{
+  color:#888;
+  font-size:12px;
+}
+
+#playerPage{
   display:none;
-  margin-top:20px;
 }
+
+.playerBox{
+  width:100%;
+  background:#050505;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid #222;
+}
+
 #player{
   width:100%;
   aspect-ratio:16/9;
   background:#111;
 }
+
 #player iframe{
   width:100%;
   height:100%;
   border:0;
 }
-.roomBox{
+
+.videoInfo{
+  padding:14px 2px;
+}
+
+.videoTitle{
+  font-size:18px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.roomActions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.secondary{
+  background:#111;
+  color:#fff;
+  border:1px solid #333;
+}
+
+.roomPanel{
+  display:none;
+  margin-top:18px;
+  padding:14px;
   background:#111;
   border:1px solid #222;
   border-radius:10px;
-  padding:14px;
-  margin-top:15px;
 }
-.roomBox h2{margin-top:0}
-#rooms{margin-top:20px}
-.room{
-  background:#111;
-  border:1px solid #222;
-  padding:12px;
-  border-radius:9px;
-  margin-bottom:8px;
+
+.roomHeader{
   display:flex;
   justify-content:space-between;
   align-items:center;
   gap:10px;
 }
-.status{color:#777}
+
+.roomName{
+  font-size:18px;
+  font-weight:700;
+}
+
+.roomStatus{
+  color:#888;
+  font-size:13px;
+  margin-top:5px;
+}
+
+.chat{
+  margin-top:15px;
+  border-top:1px solid #222;
+  padding-top:14px;
+}
+
+.chatMessages{
+  height:180px;
+  overflow-y:auto;
+  background:#080808;
+  border:1px solid #222;
+  border-radius:8px;
+  padding:10px;
+}
+
+.message{
+  margin-bottom:9px;
+  font-size:14px;
+  line-height:1.35;
+}
+
+.message strong{
+  color:#fff;
+}
+
+.message span{
+  color:#bbb;
+}
+
+.chatInput{
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+}
+
+.chatInput input{
+  flex:1;
+}
+
+.rooms{
+  margin-top:24px;
+}
+
+.roomItem{
+  background:#111;
+  border:1px solid #222;
+  border-radius:9px;
+  padding:12px;
+  margin-bottom:9px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.roomItemTitle{
+  font-weight:700;
+  font-size:14px;
+}
+
+.roomItemInfo{
+  color:#777;
+  font-size:12px;
+  margin-top:4px;
+}
+
+.empty{
+  color:#777;
+  padding:15px 0;
+  font-size:14px;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.loading{
+  color:#777;
+  padding:10px 0;
+}
+
+.backButton{
+  display:none;
+  margin-bottom:12px;
+  background:#111;
+  color:#fff;
+  border:1px solid #333;
+}
+
+@media(max-width:600px){
+
+  main{
+    padding:12px;
+  }
+
+  .result img{
+    width:120px;
+    height:68px;
+  }
+
+  .resultTitle{
+    font-size:14px;
+  }
+
+  .searchBox{
+    gap:6px;
+  }
+
+  .searchBox button{
+    padding-left:12px;
+    padding-right:12px;
+  }
+
+  .roomItem{
+    align-items:flex-start;
+  }
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>Namaguederaz</h1>
-  <p>Assistir juntos.</p>
-  <p>Crie uma sala ou entre em uma sala pública ativa.</p>
-  <button onclick="createRoom()">＋ Criar sala</button>
+  <div class="headerTop">
+    <div>
+      <div class="logo">Namaguederaz</div>
+      <div class="subtitle">Assistir juntos.</div>
+    </div>
+
+    <button onclick="goHome()">Início</button>
+  </div>
 </header>
 
 <main>
 
-  <div class="search">
-    <input id="q" value="Jaspion" placeholder="Pesquisar vídeo no YouTube...">
-    <button onclick="search()">Pesquisar</button>
-  </div>
+  <button id="backButton"
+          class="backButton"
+          onclick="goBack()">
+    ← Voltar
+  </button>
 
-  <div id="results"></div>
+  <!-- INÍCIO -->
+  <section id="homePage">
 
-  <div id="playerArea">
+    <div class="searchBox">
+      <input
+        id="searchInput"
+        value="Jaspion"
+        placeholder="Pesquisar vídeo no YouTube..."
+        autocomplete="off"
+      >
 
-    <div id="player"></div>
-
-    <div class="roomBox">
-      <h2 id="videoTitle">Vídeo</h2>
-      <p id="roomStatus">Nenhuma sala criada.</p>
-
-      <button onclick="createRoom()">
-        ＋ Criar sala com este vídeo
+      <button onclick="searchYouTube()">
+        Pesquisar
       </button>
     </div>
 
-  </div>
+    <div id="results"></div>
 
-  <div id="rooms">
-    <h2>Salas públicas</h2>
-    <div id="roomList">Carregando...</div>
-  </div>
+    <div class="rooms">
+      <div class="sectionTitle">Salas públicas</div>
+      <div id="roomList">
+        <div class="loading">Carregando salas...</div>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- VÍDEO -->
+  <section id="playerPage">
+
+    <div class="playerBox">
+      <div id="player"></div>
+    </div>
+
+    <div class="videoInfo">
+
+      <div id="videoTitle" class="videoTitle">
+        Vídeo
+      </div>
+
+      <div class="roomActions">
+
+        <button onclick="createRoom()">
+          + Criar sala
+        </button>
+
+        <button
+          class="secondary"
+          onclick="leaveRoom()">
+          Sair da sala
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- SALA -->
+    <div id="roomPanel" class="roomPanel">
+
+      <div class="roomHeader">
+
+        <div>
+          <div id="roomName" class="roomName">
+            Sala
+          </div>
+
+          <div id="roomStatus" class="roomStatus">
+            Conectando...
+          </div>
+        </div>
+
+      </div>
+
+
+      <div class="chat">
+
+        <div class="sectionTitle">
+          Chat
+        </div>
+
+        <div
+          id="chatMessages"
+          class="chatMessages">
+        </div>
+
+        <div class="chatInput">
+
+          <input
+            id="chatInput"
+            placeholder="Digite uma mensagem..."
+            maxlength="300"
+            autocomplete="off"
+          >
+
+          <button onclick="sendChat()">
+            Enviar
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
 
 </main>
 
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
+
 const API = "";
 
 let selectedVideo = null;
 let currentRoom = null;
-let ws = null;
+let socket = null;
+let player = null;
 
-function search(){
-  const q = document.getElementById("q").value.trim();
+let historyState = "home";
+
+let applyingRemote = false;
+
+
+/* =========================
+   YOUTUBE
+========================= */
+
+function onYouTubeIframeAPIReady(){
+
+  if(selectedVideo){
+    createYouTubePlayer();
+  }
+
+}
+
+
+function createYouTubePlayer(){
+
+  if(!selectedVideo) return;
+
+  document.getElementById("player").innerHTML = "";
+
+  player = new YT.Player("player",{
+
+    videoId:selectedVideo.id,
+
+    playerVars:{
+      autoplay:1,
+      controls:1,
+      rel:0,
+      modestbranding:1,
+      playsinline:1
+    },
+
+    events:{
+      onReady:function(){
+
+        try{
+          player.playVideo();
+        }catch(e){}
+
+      },
+
+      onStateChange:function(event){
+
+        if(applyingRemote) return;
+
+        if(!currentRoom) return;
+
+        if(event.data === YT.PlayerState.PLAYING){
+
+          sendRoomEvent({
+            kind:"play",
+            time:player.getCurrentTime()
+          });
+
+        }
+
+        if(event.data === YT.PlayerState.PAUSED){
+
+          sendRoomEvent({
+            kind:"pause",
+            time:player.getCurrentTime()
+          });
+
+        }
+
+      }
+    }
+
+  });
+
+}
+
+
+/* =========================
+   BUSCA
+========================= */
+
+async function searchYouTube(){
+
+  const input = document.getElementById("searchInput");
+  const q = input.value.trim();
 
   if(!q) return;
 
   const results = document.getElementById("results");
-  results.innerHTML = "Pesquisando...";
 
-  fetch(API + "/api/youtube/search?q=" + encodeURIComponent(q))
-    .then(r => r.json())
-    .then(data => {
+  results.innerHTML =
+    '<div class="loading">Pesquisando...</div>';
 
-      if(data.error){
-        results.innerHTML = "<p>Erro: " + escapeHtml(data.error) + "</p>";
-        return;
-      }
+  try{
 
-      const videos = data.items || data;
+    const response =
+      await fetch(
+        "/api/youtube/search?q=" +
+        encodeURIComponent(q)
+      );
 
-      if(!videos.length){
-        results.innerHTML = "<p>Nenhum vídeo encontrado.</p>";
-        return;
-      }
+    const data = await response.json();
 
-      results.innerHTML = videos.map(video => {
+    if(!response.ok){
+
+      results.innerHTML =
+        '<div class="empty">' +
+        escapeHtml(
+          data.error ||
+          "Erro na pesquisa."
+        ) +
+        '</div>';
+
+      return;
+    }
+
+    const videos = data.items || [];
+
+    if(!videos.length){
+
+      results.innerHTML =
+        '<div class="empty">' +
+        'Nenhum vídeo encontrado.' +
+        '</div>';
+
+      return;
+    }
+
+    results.innerHTML =
+      videos.map(video => {
 
         const id = video.videoId;
-        const title = video.title || "";
-        const channel = video.channelTitle || "";
-        const thumb = video.thumb ||
-          "https://i.ytimg.com/vi/" + id + "/hqdefault.jpg";
+        const title = video.title || "Vídeo";
+        const channel =
+          video.channelTitle || "";
+
+        const thumb =
+          video.thumb ||
+          "https://i.ytimg.com/vi/" +
+          id +
+          "/hqdefault.jpg";
 
         return `
-          <div class="result" onclick="openVideo('${escapeAttr(id)}', '${escapeAttr(title)}')">
-            <img src="${escapeAttr(thumb)}" alt="">
-            <div>
-              <h3>${escapeHtml(title)}</h3>
-              <small>${escapeHtml(channel)}</small>
+          <div
+            class="result"
+            onclick="openVideo(
+              '${escapeAttr(id)}',
+              '${escapeAttr(title)}'
+            )">
+
+            <img
+              src="${escapeAttr(thumb)}"
+              loading="lazy"
+              alt="">
+
+            <div class="resultInfo">
+
+              <div class="resultTitle">
+                ${escapeHtml(title)}
+              </div>
+
+              <div class="resultChannel">
+                ${escapeHtml(channel)}
+              </div>
+
             </div>
+
           </div>
         `;
+
       }).join("");
 
-    })
-    .catch(err => {
-      results.innerHTML = "<p>Erro ao pesquisar.</p>";
-      console.error(err);
-    });
+  }catch(error){
+
+    console.error(error);
+
+    results.innerHTML =
+      '<div class="empty">' +
+      'Não foi possível pesquisar agora.' +
+      '</div>';
+
+  }
+
 }
+
+
+/* =========================
+   ABRIR VÍDEO
+========================= */
 
 function openVideo(videoId,title){
 
   selectedVideo = {
-    id: videoId,
-    title: title
+    id:videoId,
+    title:title
   };
 
-  document.getElementById("playerArea").style.display = "block";
-  document.getElementById("videoTitle").textContent = title;
+  currentRoom = null;
 
-  document.getElementById("player").innerHTML = `
-    <iframe
-      src="https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0"
-      title="${escapeAttr(title)}"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen>
-    </iframe>
-  `;
+  document.getElementById("homePage")
+    .style.display = "none";
 
-  document.getElementById("roomStatus").textContent =
-    "Vídeo selecionado. Você pode criar uma sala.";
+  document.getElementById("playerPage")
+    .style.display = "block";
+
+  document.getElementById("backButton")
+    .style.display = "block";
+
+  document.getElementById("roomPanel")
+    .style.display = "none";
+
+  document.getElementById("videoTitle")
+    .textContent = title;
+
+  document.getElementById("roomStatus")
+    .textContent =
+    "Vídeo selecionado.";
+
+  history.pushState(
+    {page:"video"},
+    "",
+    "#video"
+  );
+
+  historyState = "video";
+
+  if(window.YT && YT.Player){
+
+    createYouTubePlayer();
+
+  }
+
 }
+
+
+/* =========================
+   CRIAR SALA
+========================= */
 
 async function createRoom(){
 
   if(!selectedVideo){
+
     alert("Primeiro escolha um vídeo.");
+
     return;
   }
 
   try{
 
-    const response = await fetch(API + "/api/rooms",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        title:selectedVideo.title,
-        pickedId:selectedVideo.id,
-        public:true
-      })
-    });
+    const response =
+      await fetch("/api/rooms",{
 
-    const room = await response.json();
+        method:"POST",
+
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+
+        body:JSON.stringify({
+
+          title:selectedVideo.title,
+
+          pickedId:selectedVideo.id,
+
+          public:true
+
+        })
+
+      });
+
+    const room =
+      await response.json();
 
     if(!response.ok){
-      throw new Error(room.error || "Não foi possível criar a sala.");
+
+      throw new Error(
+        room.error ||
+        "Não foi possível criar a sala."
+      );
+
     }
 
     currentRoom = room;
 
-    const roomId = room.id || room.roomId;
+    document.getElementById("roomPanel")
+      .style.display = "block";
 
-    document.getElementById("roomStatus").textContent =
-      "Sala criada! ID: " + roomId;
+    document.getElementById("roomName")
+      .textContent =
+      room.title || "Sala";
 
-    connectRoom(roomId);
+    document.getElementById("roomStatus")
+      .textContent =
+      "Sala pública ativa.";
+
+    history.pushState(
+      {page:"room"},
+      "",
+      "#room"
+    );
+
+    historyState = "room";
+
+    connectRoom(room.id);
 
     loadRooms();
 
   }catch(error){
 
-    document.getElementById("roomStatus").textContent =
-      "Erro ao criar sala: " + error.message;
+    document.getElementById("roomStatus")
+      .textContent =
+      "Erro: " + error.message;
 
   }
+
 }
 
-async function loadRooms(){
 
-  try{
-
-    const response = await fetch(API + "/api/rooms");
-    const data = await response.json();
-
-    const rooms = Array.isArray(data)
-      ? data
-      : (data.rooms || []);
-
-    const list = document.getElementById("roomList");
-
-    if(!rooms.length){
-      list.innerHTML = '<p class="status">Nenhuma sala pública ativa.</p>';
-      return;
-    }
-
-    list.innerHTML = rooms.map(room => {
-
-      const id = room.id || room.roomId;
-      const title = room.title || "Sala";
-
-      return `
-        <div class="room">
-          <div>
-            <strong>${escapeHtml(title)}</strong><br>
-            <small class="status">Sala pública</small>
-          </div>
-          <button onclick="joinRoom('${escapeAttr(id)}')">
-            Entrar
-          </button>
-        </div>
-      `;
-
-    }).join("");
-
-  }catch(error){
-
-    document.getElementById("roomList").innerHTML =
-      '<p class="status">Não foi possível carregar as salas.</p>';
-
-  }
-}
+/* =========================
+   ENTRAR NA SALA
+========================= */
 
 async function joinRoom(roomId){
 
   try{
 
-    const response = await fetch(
-      API + "/api/rooms/" + encodeURIComponent(roomId) + "/join",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
+    const response =
+      await fetch(
+        "/api/rooms/" +
+        encodeURIComponent(roomId) +
+        "/join",
+        {
+          method:"POST",
+          headers:{
+            "Content-Type":
+              "application/json"
+          }
         }
-      }
-    );
+      );
 
-    const room = await response.json();
+    const room =
+      await response.json();
 
     if(!response.ok){
-      throw new Error(room.error || "Não foi possível entrar.");
+
+      throw new Error(
+        room.error ||
+        "Não foi possível entrar."
+      );
+
     }
 
     currentRoom = room;
 
-    const videoId =
-      room.pickedId ||
-      room.videoId ||
-      room.video?.videoId;
+    selectedVideo = {
 
-    const title =
-      room.title ||
-      room.videoTitle ||
-      "Vídeo";
+      id:
+        room.pickedId ||
+        room.videoId,
 
-    if(videoId){
-      openVideo(videoId,title);
-    }
+      title:
+        room.title ||
+        "Vídeo"
 
-    document.getElementById("roomStatus").textContent =
+    };
+
+    document.getElementById("homePage")
+      .style.display = "none";
+
+    document.getElementById("playerPage")
+      .style.display = "block";
+
+    document.getElementById("backButton")
+      .style.display = "block";
+
+    document.getElementById("roomPanel")
+      .style.display = "block";
+
+    document.getElementById("videoTitle")
+      .textContent =
+      selectedVideo.title;
+
+    document.getElementById("roomName")
+      .textContent =
+      selectedVideo.title;
+
+    document.getElementById("roomStatus")
+      .textContent =
       "Você entrou na sala.";
 
+    history.pushState(
+      {page:"room"},
+      "",
+      "#room"
+    );
+
+    historyState = "room";
+
     connectRoom(roomId);
+
+    if(window.YT && YT.Player){
+
+      createYouTubePlayer();
+
+    }
 
   }catch(error){
 
     alert(error.message);
 
   }
+
 }
+
+
+/* =========================
+   WEBSOCKET
+========================= */
 
 function connectRoom(roomId){
 
-  if(ws){
-    try{ ws.close(); }catch(e){}
+  if(socket){
+
+    try{
+      socket.close();
+    }catch(e){}
+
   }
 
   const protocol =
-    location.protocol === "https:" ? "wss:" : "ws:";
+    location.protocol === "https:"
+      ? "wss:"
+      : "ws:";
 
-  ws = new WebSocket(
-    protocol + "//" + location.host + "/ws"
-  );
+  socket =
+    new WebSocket(
+      protocol +
+      "//" +
+      location.host +
+      "/ws"
+    );
 
-  ws.onopen = () => {
+  socket.onopen = function(){
 
-    ws.send(JSON.stringify({
-      type:"join-room",
-      roomId:roomId
-    }));
+    socket.send(
+      JSON.stringify({
+
+        type:"join-room",
+
+        roomId:roomId
+
+      })
+    );
+
+    document.getElementById("roomStatus")
+      .textContent =
+      "Conectado à sala.";
 
   };
 
-  ws.onmessage = event => {
+
+  socket.onmessage = function(event){
 
     try{
 
-      const message = JSON.parse(event.data);
+      const message =
+        JSON.parse(event.data);
 
-      if(message.type === "room"){
-        console.log("Evento da sala:",message);
+      if(
+        message.type ===
+        "room-event"
+      ){
+
+        handleRoomEvent(
+          message.event
+        );
+
       }
 
+    }catch(error){
+
+      console.error(error);
+
+    }
+
+  };
+
+
+  socket.onerror = function(){
+
+    document.getElementById("roomStatus")
+      .textContent =
+      "Conexão da sala indisponível.";
+
+  };
+
+}
+
+
+/* =========================
+   EVENTOS DA SALA
+========================= */
+
+function sendRoomEvent(event){
+
+  if(!currentRoom) return;
+
+  if(
+    socket &&
+    socket.readyState === WebSocket.OPEN
+  ){
+
+    socket.send(
+      JSON.stringify({
+
+        type:"room-event",
+
+        roomId:currentRoom.id,
+
+        event:event
+
+      })
+    );
+
+  }
+
+}
+
+
+/* Também envia pelo endpoint HTTP,
+   para manter compatibilidade. */
+
+async function sendRoomEventHTTP(event){
+
+  if(!currentRoom) return;
+
+  try{
+
+    await fetch(
+      "/api/rooms/" +
+      encodeURIComponent(
+        currentRoom.id
+      ) +
+      "/event",
+      {
+        method:"POST",
+        headers:{
+          "Content-Type":
+            "application/json"
+        },
+        body:JSON.stringify({
+          event:event
+        })
+      }
+    );
+
+  }catch(e){
+
+    console.log(e);
+
+  }
+
+}
+
+
+function handleRoomEvent(event){
+
+  if(!event) return;
+
+  if(event.kind === "chat"){
+
+    addChatMessage(
+      event.name || "Participante",
+      event.text || ""
+    );
+
+    return;
+
+  }
+
+
+  if(!player) return;
+
+  applyingRemote = true;
+
+  try{
+
+    if(event.time !== undefined){
+
+      player.seekTo(
+        Number(event.time),
+        true
+      );
+
+    }
+
+    if(event.kind === "play"){
+
+      player.playVideo();
+
+    }
+
+    if(event.kind === "pause"){
+
+      player.pauseVideo();
+
+    }
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+  setTimeout(
+    function(){
+      applyingRemote = false;
+    },
+    500
+  );
+
+}
+
+
+/* =========================
+   CHAT
+========================= */
+
+function sendChat(){
+
+  const input =
+    document.getElementById(
+      "chatInput"
+    );
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+  const name = "Você";
+
+  addChatMessage(
+    name,
+    text
+  );
+
+  sendRoomEvent({
+
+    kind:"chat",
+
+    name:name,
+
+    text:text
+
+  });
+
+  input.value = "";
+
+}
+
+
+function addChatMessage(name,text){
+
+  const box =
+    document.getElementById(
+      "chatMessages"
+    );
+
+  const message =
+    document.createElement("div");
+
+  message.className =
+    "message";
+
+  message.innerHTML =
+    "<strong>" +
+    escapeHtml(name) +
+    ":</strong> " +
+    "<span>" +
+    escapeHtml(text) +
+    "</span>";
+
+  box.appendChild(message);
+
+  box.scrollTop =
+    box.scrollHeight;
+
+}
+
+
+/* =========================
+   SALAS PÚBLICAS
+========================= */
+
+async function loadRooms(){
+
+  const list =
+    document.getElementById(
+      "roomList"
+    );
+
+  try{
+
+    const response =
+      await fetch("/api/rooms");
+
+    const data =
+      await response.json();
+
+    const rooms =
+      Array.isArray(data)
+        ? data
+        : data.rooms || [];
+
+    if(!rooms.length){
+
+      list.innerHTML =
+        '<div class="empty">' +
+        'Nenhuma sala pública ativa.' +
+        '</div>';
+
+      return;
+
+    }
+
+    list.innerHTML =
+      rooms.map(room => {
+
+        const id =
+          room.id ||
+          room.roomId;
+
+        const title =
+          room.title ||
+          "Sala";
+
+        const clients =
+          room.clients || 0;
+
+        return `
+          <div class="roomItem">
+
+            <div>
+
+              <div class="roomItemTitle">
+                ${escapeHtml(title)}
+              </div>
+
+              <div class="roomItemInfo">
+                ${clients} participante(s)
+              </div>
+
+            </div>
+
+            <button
+              onclick="joinRoom(
+                '${escapeAttr(id)}'
+              )">
+              Entrar
+            </button>
+
+          </div>
+        `;
+
+      }).join("");
+
+  }catch(error){
+
+    console.error(error);
+
+    list.innerHTML =
+      '<div class="empty">' +
+      'Não foi possível carregar as salas.' +
+      '</div>';
+
+  }
+
+}
+
+
+/* =========================
+   SAIR DA SALA
+========================= */
+
+function leaveRoom(){
+
+  if(socket){
+
+    try{
+      socket.close();
     }catch(e){}
 
-  };
+    socket = null;
 
-  ws.onerror = () => {
-    console.log("WebSocket indisponível.");
-  };
+  }
+
+  currentRoom = null;
+
+  document.getElementById("roomPanel")
+    .style.display = "none";
+
+  document.getElementById("roomStatus")
+    .textContent =
+    "Vídeo selecionado.";
+
+  historyState = "video";
+
 }
+
+
+/* =========================
+   NAVEGAÇÃO
+========================= */
+
+function goHome(){
+
+  if(socket){
+
+    try{
+      socket.close();
+    }catch(e){}
+
+    socket = null;
+
+  }
+
+  currentRoom = null;
+
+  document.getElementById("playerPage")
+    .style.display = "none";
+
+  document.getElementById("homePage")
+    .style.display = "block";
+
+  document.getElementById("backButton")
+    .style.display = "none";
+
+  historyState = "home";
+
+  if(location.hash){
+
+    history.replaceState(
+      {page:"home"},
+      "",
+      location.pathname
+    );
+
+  }
+
+  loadRooms();
+
+}
+
+
+function goBack(){
+
+  if(historyState === "room"){
+
+    leaveRoom();
+
+    historyState = "video";
+
+    history.replaceState(
+      {page:"video"},
+      "",
+      "#video"
+    );
+
+    return;
+
+  }
+
+  if(historyState === "video"){
+
+    goHome();
+
+    return;
+
+  }
+
+  goHome();
+
+}
+
+
+/* Botão físico Voltar do Android/Web */
+
+window.addEventListener(
+  "popstate",
+  function(){
+
+    if(historyState === "room"){
+
+      leaveRoom();
+
+      historyState = "video";
+
+      return;
+
+    }
+
+    if(historyState === "video"){
+
+      goHome();
+
+      return;
+
+    }
+
+    goHome();
+
+  }
+);
+
+
+/* =========================
+   SEGURANÇA DO TEXTO
+========================= */
 
 function escapeHtml(value){
+
   return String(value)
+
     .replaceAll("&","&amp;")
+
     .replaceAll("<","&lt;")
+
     .replaceAll(">","&gt;")
+
     .replaceAll('"',"&quot;")
+
     .replaceAll("'","&#039;");
+
 }
+
 
 function escapeAttr(value){
+
   return escapeHtml(value);
+
 }
 
+
+/* =========================
+   ENTER NA PESQUISA
+========================= */
+
+document
+  .getElementById("searchInput")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      if(event.key === "Enter"){
+
+        searchYouTube();
+
+      }
+
+    }
+  );
+
+
+/* ENTER NO CHAT */
+
+document
+  .getElementById("chatInput")
+  .addEventListener(
+    "keydown",
+    function(event){
+
+      if(event.key === "Enter"){
+
+        sendChat();
+
+      }
+
+    }
+  );
+
+
+/* =========================
+   INICIAR
+========================= */
+
+history.replaceState(
+  {page:"home"},
+  "",
+  location.pathname
+);
+
 loadRooms();
+
 </script>
 
 </body>
